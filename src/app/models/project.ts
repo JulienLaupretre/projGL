@@ -9,13 +9,13 @@ export class Project {
   constructor(
     public id: number,
     public name: string,
-    public projectManager : User,
+    public projectManager : string,
     public description? : string,
     public state? : string,
     public startDate? : Date,
     public estimatedEndDate? : Date,
     public actualEndDate? : Date,
-    public client? : Client,
+    public client? : string,
     public contactClient? : Contact, 
     public listTask? : Task[],
   ) {}

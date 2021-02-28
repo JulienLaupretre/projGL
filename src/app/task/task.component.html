@@ -1,1 +1,6 @@
-<p>task works!</p>
+<td>{{task.name}}</td>
+<td><progress value = "{{tempsConsomme}}" max="{{task.estimatedWorkload}}"></progress></td>
+<td>{{task.estimatedWorkload}}</td>
+<td>{{task.usedWorkload}}</td>
+<td>{{task.remainingWorkload}}</td>
+<td>{{task.endDate | date:'d/M/y'}}</td>

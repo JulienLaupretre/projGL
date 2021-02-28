@@ -1,4 +1,3 @@
-import { Task } from "./task";
 import { Contact } from "./contact";
 
 

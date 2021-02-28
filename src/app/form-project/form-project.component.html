@@ -1,1 +1,40 @@
-<p>form-project works!</p>
+<div mat-dialog-content >
+    <h2>Créer un client
+    <button mat-icon-button class="close-button" style="float: right;" [mat-dialog-close]="true">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h5>(<label class="control-label"></label>) champ requis</h5>
+</h2>
+    <form>
+        <div class = "form-group">
+      <label for="Nom de projet">Le nom du projet</label>
+      <input id="Nom de projet" name ="Nom de projet" type="text" class="form-control" placeholder="Entrer le nom du projet" [(ngModel)]="projectName">
+    </div>
+    <div class = "form-group">
+      <label for="Chef de projet">Le chef de projet</label>
+      <input id="Chef de projet" name="Chef de projet" type="text" class="form-control" placeholder="Entrer le chef du projet" [(ngModel)]="ChefName">
+    </div>
+    <div class="form-group">
+      <label for="client">Le client</label>
+      <select id="client" name="client" type="text" class="form-control" aria-placeholder="Client" [(ngModel)]="ClientName">
+          <option value="Client1"> client1</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="start_date">Date de début</label>
+      <input id="start_date" name="start_date" type="date" class="form-control" [ngModel]="StartDate | date:'yyyy-MM-dd'" (ngModelChange)="StartDate = $event">
+    </div>
+    <div class="form-group">
+      <label for="end_date">Date de fin</label>
+      <input id="end_date" name="end_date" type="date" class="form-control"  [ngModel]="EndDate | date:'yyyy-MM-dd'" (ngModelChange)="EndDate = $event">
+    </div>
+    <div class="form-group">
+      <label for="description">Description du projet</label>
+      <textarea id="description" name="description" cols="30" rows="10" placeholder ="Entrez la description du projet"class="form-control"[(ngModel)]="Description"></textarea>
+    </div>
+    <div class="my-btns">
+      <button type="submit" class="btn btn-success" id="btn-success" (click)="AddProject()">Valider</button>
+      <button mat-button mat-dialog-close class="btn btn-light" id="btn-light"  >Annuler</button>
+    </div>
+    </form>
+</div>

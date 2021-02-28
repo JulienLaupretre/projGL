@@ -17,23 +17,25 @@
             <app-dashboard></app-dashboard>
         </ng-template>
     </mat-tab>
+    
     <mat-tab label="Projets">
         <ng-template matTabContent>
             <app-project-board></app-project-board>
         </ng-template>
     </mat-tab>
+
+    <div>
     <mat-tab label="Clients">
         <ng-template matTabContent>
             <app-list-clients></app-list-clients>
         </ng-template>
     </mat-tab>
+    </div>
+    
 </mat-tab-group>
 
 
-
-
-
-  <router-outlet></router-outlet>
+<router-outlet></router-outlet>
 
 
 

@@ -24,6 +24,7 @@ import { ProjectBoardComponent } from './project-board/project-board.component';
 import { FormClientComponent } from './form-client/form-client.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
+import {AddInfoService} from './services/add-info.service';
 import { ClientsService } from './services/clients.service';
 import {MatIconModule} from '@angular/material/icon';
 import { FilterPipeModule } from 'ngx-filter-pipe';
@@ -45,7 +46,7 @@ import { SearchUserComponent } from './search-user/search-user.component';
     FormTaskComponent,
     FormUserComponent,
     MainWindowComponent,
-    ListClientsComponent,
+    ListClientsComponent, 
     ClientComponent,
     DashboardComponent,
     ProjectBoardComponent,
@@ -57,6 +58,7 @@ import { SearchUserComponent } from './search-user/search-user.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
@@ -69,11 +71,13 @@ import { SearchUserComponent } from './search-user/search-user.component';
   providers: [
     AuthService,
     AuthGuardService,
-    ClientsService
+    ClientsService,
+    AddInfoService
   ],
   bootstrap: [AppComponent],
-  entryComponents:[FormClientComponent]
-  
+  entryComponents:[FormClientComponent,
+    FormProjectComponent]
+
 })
 export class AppModule { 
   

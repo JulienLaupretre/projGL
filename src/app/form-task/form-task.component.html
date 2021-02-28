@@ -1,1 +1,59 @@
-<p>form-task works!</p>
+<form>
+    <label id="titre">Nom du projet</label>
+    <div class = "form-group">
+        <label for="Chef de projet">Le chef de projet</label>
+        <input id="Chef de projet" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="client">Le client</label>
+        <select id="Client" type="text" class="form-control">
+            <option value="Client1">option1</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="start_date">Date de début</label>
+        <input id="start_date" type="date" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="end_date">Date de fin</label>
+        <input id="end_date" type="date" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="description">Description du projet</label>
+        <textarea id="description" cols="30" rows="10" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="tasksList">Liste des tâches</label>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nom Tâche</th>
+                    <th> Responsable</th>
+                    <th>C. estimée</th>
+                    <th>Fin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="taskName" name="taskName" type="text" class="form-control" [(ngModel)]="nomTask"></td>
+                    <td><select id="responsable" name= "responsable" type="text" class="form-control" [(ngModel)]="responsable">
+                            <option value="">Choisi un responsable</option>
+                        </select></td>
+                    <td><input id="C.estimee" name ="C.estimee" type="number" class="form-control" [(ngModel)]="chargeEstimee"></td>
+                    <td><input id="end_date" name ="end_date" type="date" class="form-control" [(ngModel)]="end_date"></td>
+                    <td><button name = "buttonadd" type = "button" class = "btn btn-default" > + </button></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </form>
+  
