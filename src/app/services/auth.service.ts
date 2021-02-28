@@ -32,9 +32,6 @@ export class AuthService{
     // so we need to signIn back the admin after the creation
     let originalUser = firebase.auth().currentUser; 
 
-
-  createNewUser(email: string, password: string) {
-
     return new Promise<void>(
       (resolve, reject) => {
         firebase.auth().createUserWithEmailAndPassword(email, password).then(
