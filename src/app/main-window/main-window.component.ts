@@ -6,7 +6,6 @@ import { AuthService } from '../services/auth.service';
 
 //import "firebase/firestore";
 
-
 @Component({
   selector: 'app-main-window',
   templateUrl: './main-window.component.html',

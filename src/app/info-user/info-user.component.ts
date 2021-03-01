@@ -5,6 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import firebase from "firebase/app";
 import "firebase/auth";
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-info-user',
@@ -28,6 +29,8 @@ export class InfoUserComponent implements OnInit {
     address: ['', ],
     phone: ['', ],
     endDate: ['', ],
+    oldPassword: ['', ],
+    newPassword: ['', ],
   });
   errorMessage: string;
   genders = ['H', 'F',
@@ -35,10 +38,13 @@ export class InfoUserComponent implements OnInit {
 
   submitted = false;
 
+  reauthenticate = false;
+
   constructor(
     private userService: UsersService,
     private formBuilder: FormBuilder, 
     private location: Location ,
+    private authService: AuthService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -50,11 +56,9 @@ export class InfoUserComponent implements OnInit {
     this.user = this.users.find(el => el != null && el.email===email);
 
     this.initForm();
-
   }
 
   initForm() {
-    
     this.signupForm = this.formBuilder.group({
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
@@ -66,6 +70,8 @@ export class InfoUserComponent implements OnInit {
       address: [this.user.address, ],
       phone: [this.user.phone, ],
       endDate: [this.user.endDate, ],
+      oldPassword: [, ],
+      newPassword: [, ],
     });
   }
 
@@ -87,6 +93,34 @@ export class InfoUserComponent implements OnInit {
     this.user.address = this.signupForm.get('address').value;
     this.user.phone = this.signupForm.get('phone').value;
     this.user.endDate = this.signupForm.get('endDate').value;
+    const oldPassword = this.signupForm.get('oldPassword').value;
+    const newPassword = this.signupForm.get('newPassword').value;
+
+
+    if(newPassword != null){
+
+      //On signIn d'abord l'user pour des question de securité
+      this.authService.signInUser(this.user.email,oldPassword).then(
+        ()=>{
+          // En cas de signIn reussi on change le mot de passe
+          this.authService.changePassword(newPassword).then(
+            () => {
+            },
+            (error) => {
+              this.errorMessage = error;
+              this.submitted = false;
+            }
+          );
+
+        },
+        (error)=>{
+
+          this.submitted = false;
+          this.errorMessage = error;
+        }
+      );
+
+    }
 
     this.userService.modifyUser(this.user); // Modifying the user service firebase
 

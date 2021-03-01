@@ -10,6 +10,7 @@ import "firebase/firestore";
 })
 export class AppComponent {
   title = 'projGL';
+  
 
   constructor(){
     

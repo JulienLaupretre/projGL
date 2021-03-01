@@ -5,6 +5,7 @@ export class Task {
     constructor(
       public id: number,
       public name: string,
+      public state:string,
       public collab? : string,
       public startDate? : Date,
       public actualStartDate? : Date,

@@ -21,8 +21,6 @@ export class UsersService{
 
   emitUsers() {
     this.usersSubject.next(this.users);
-    console.log("EMIT :");
-    console.log(this.users);
   }
 
   saveUsers() { 

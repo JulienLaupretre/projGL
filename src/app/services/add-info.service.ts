@@ -30,7 +30,7 @@ export class AddInfoService {
   public tasks1:Task[] = [];
   public tasks2:Task[] = [];
   //collab =new User(1, "haithem", "dahimi", "dahimihaithem@gmail.com", "employee", ["employee"], new Date(), new Date(),"", "", "", "","",new Date() );
-  task = new Task(1, "him", "dahimihaithem@gmail.com", new Date(), new Date(), new Date(), new Date(), "dqsjdskq", 10, 0,10,0 , this.tasks,this.tasks1, this.tasks2 );
+  task = new Task(1, "him", "dahimihaithem@gmail.com", "non_demarree", new Date(), new Date(), new Date(), new Date(), "dqsjdskq", 10, 0,10,0 , this.tasks,this.tasks1, this.tasks2 );
   project = new Project(1, "building", "dahimihaithem@gmail.com", "this is builiding project", "termine", new Date(), new Date(), new Date(), null, null, [this.task]);
   public listProject:Project[]= [];
   public listClients: Client[];
@@ -69,7 +69,7 @@ export class AddInfoService {
   }
   emitTasksubject()
   {
-    this.tasksSubject.next(this.listProject);
+    //this.tasksSubject.next(this.listTasks);
   }
 
   getListTasksFromServer(id:number){

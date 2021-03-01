@@ -80,12 +80,12 @@ export class FormProjectComponent implements OnInit {
 
   AddTask(){
     if(this.tacheMere === undefined || this.tacheMere === null){
-      this.task=new Task(1,this.taskName, this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,2,2,2,[],[],[], 0);
+      this.task=new Task(1,this.taskName, this.collaboRes,"non_demarree", this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,2,2,2,[],[],[], 0);
       this.listTask.push(this.task);
     } else {
       for( var index = 0; index < this.listTask.length; ++index){
         if(this.listTask[index].name == this.tacheMere){
-          this.task=new Task(1,this.taskName, this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,2,2,2,[],[],[], this.listTask[index].niveau +1);
+          this.task=new Task(1,this.taskName, this.collaboRes, "non_demarree",this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,2,2,2,[],[],[], this.listTask[index].niveau +1);
           this.listTask[index].listTaskChild.push(this.task);
           if(this.listTask[index].listTaskChild.length === 1){
             this.listTask[index].startDate = this.task.startDate;

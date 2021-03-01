@@ -1,8 +1,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <ul class="nav navbar-nav navbar-right">
-            
-            <li routerLinkActive="active"><div *ngIf="!isAuth" style="margin-top: 15px;"><a routerLink="admin"><button >Page admin</button></a></div></li>
+            <li routerLinkActive="active"><div *ngIf="isAuth" style="margin-top: 15px;"><a routerLink="admin"><button >Page admin</button></a></div></li>
             <li routerLinkActive="active"><a routerLink="infos-user"><mat-icon>account_circle</mat-icon></a></li>
             <li>
                 <a (click)="onSignOut()" style = "cursor:pointer">Déconnexion</a>

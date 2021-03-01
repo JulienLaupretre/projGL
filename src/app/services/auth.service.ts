@@ -48,5 +48,22 @@ export class AuthService{
     );
   }
 
+  changePassword(psw : string){
+    //return firebase.auth().currentUser.updatePassword(psw));
+    return new Promise<void>(
+      (resolve, reject) => {
+        firebase.auth().currentUser.updatePassword(psw).then(
+          () => {
+            resolve();
+            //firebase.auth().updateCurrentUser(originalUser); //SignIn back the admins
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      }
+    );
+  }
+
 }
 

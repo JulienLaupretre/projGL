@@ -134,7 +134,7 @@ export class ListProjectsComponent implements OnInit {
   }
 
   AddTask(){
-    this.task=new Task(1,this.taskName, this.collaboRes, this.startDate, this.startDate, this.endDate, this.endDate, this.description, this.Cestimee,2,2,2,[],[],[]);
+    this.task=new Task(1,this.taskName, this.collaboRes,"non_demarree", this.startDate, this.startDate, this.endDate, this.endDate, this.description, this.Cestimee,2,2,2,[],[],[]);
     if(!this.projetActuel.hasOwnProperty('listTask'))
     {
       var db = firebase.database()

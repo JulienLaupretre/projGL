@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+      <h2>Nom tache</h2>
+      <form [formGroup]="progressForm" (ngSubmit)="onSave()">
+        <div class="form-group">
+        <div class="col-md-4 mb-3">
+            <label for="chargeCons">Charge Consommée</label>
+            <input type ="number" id="chargeCons" formControlName="chargeCons" class="form-control" >
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="avancement">Avancement</label>
+            <input type ="number" id="avancement" formControlName="avancement" class="form-control">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="chargeRestante">Charge Restante</label>
+            <input type ="number" id="chargeRestante" formControlName="chargeRestante" class="form-control">
+        </div>
+        <div class="col-md-12 mb-3">
+            <input class="btn btn-danger" type="reset" value="Reset">
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="commentaire">Commentaire</label>
+            <textarea id="commentaire" name="commentaire" class="form-control" aria-label="With textarea" class="form-control"></textarea>
+        </div>
+        </div>
+        <div class="border text-center">
+            <button type="button" class="btn btn-outline-dark">Cancel</button>
+            <button  type="submit" class="btn btn-info" [disabled]="progressForm.invalid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  

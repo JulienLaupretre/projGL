@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatTabsModule} from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
@@ -22,6 +23,11 @@ import { ClientComponent } from './client/client.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectBoardComponent } from './project-board/project-board.component';
 import { FormClientComponent } from './form-client/form-client.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormAvancementComponent } from './form-avancement/form-avancement.component';
+import { DashboardService } from './services/dashboard.service';
+import { SortDirective } from './directive/sort.directive';
+
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import {AddInfoService} from './services/add-info.service';
@@ -52,6 +58,8 @@ import { InfoUserComponent } from './info-user/info-user.component';
     DashboardComponent,
     ProjectBoardComponent,
     FormClientComponent,
+    FormAvancementComponent,
+    SortDirective,
     ModifUserComponent,
     AdminWindowComponent,
     SearchUserComponent,
@@ -60,7 +68,7 @@ import { InfoUserComponent } from './info-user/info-user.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-
+    NgbModule,
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
@@ -74,11 +82,13 @@ import { InfoUserComponent } from './info-user/info-user.component';
     AuthService,
     AuthGuardService,
     ClientsService,
-    AddInfoService
+    AddInfoService,
+    DashboardService
   ],
   bootstrap: [AppComponent],
   entryComponents:[FormClientComponent,
     FormProjectComponent]
+
 
 })
 export class AppModule { 
