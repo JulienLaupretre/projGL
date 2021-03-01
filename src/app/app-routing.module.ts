@@ -15,7 +15,7 @@ const routes: Routes = [
  { path: 'main-window',canActivate: [AuthGuardService], component: MainWindowComponent },
  { path: 'main-window/infos-user',canActivate: [AuthGuardService], component: AuthComponent }, 
  { path: 'auth',component: AuthComponent },
- { path: 'admin',canActivate: [AuthGuardService], component: AdminWindowComponent },
+ { path: 'main-window/admin',canActivate: [AuthGuardService], component: AdminWindowComponent },
  { path: 'users/search',canActivate: [AuthGuardService], component: SearchUserComponent },
  { path: 'users/new',canActivate: [AuthGuardService], component: FormUserComponent },
  { path: 'user-modif/:id',canActivate: [AuthGuardService], component: ModifUserComponent },
