@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { User } from '../models/user';
-import {Subject} from 'rxjs';
+import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http'
 import { Observable, of } from 'rxjs';
 
@@ -10,15 +10,19 @@ import { Observable, of } from 'rxjs';
 export class UsersService{
 
   constructor(private httpClient: HttpClient) { }
-  
-  users: User[];
+
+  public user: User;
+
+  public users: User[];
+
   usersSubject = new Subject<User[]>();
 
   private userURL = 'https://projgl-c484f-default-rtdb.europe-west1.firebasedatabase.app/users.json';
 
-
   emitUsers() {
     this.usersSubject.next(this.users);
+    console.log("EMIT :");
+    console.log(this.users);
   }
 
   saveUsers() { 
@@ -28,7 +32,6 @@ export class UsersService{
   this.httpClient.put(this.userURL, this.users)
     .subscribe(
       () => {
-        console.log('Enregistrement terminé')
       },
       (error) => {
         console.log('Erreur de sauvegarde' + error)
@@ -37,17 +40,14 @@ export class UsersService{
   }
 
   createNewUser(newUser: User) {
-    console.log(this.users);
     this.users.push(newUser);
     this.saveUsers();
     this.emitUsers();
   }
 
   modifyUser(u: User) {
-    let index = this.users.findIndex(user => user.email === u.email)
+    let index = this.users.findIndex(user => user.email === u.email);
     this.users[index] = u;
-    console.log("user :")
-    console.log(this.users[index]);
     this.saveUsers();
     this.emitUsers();
   }
@@ -57,11 +57,8 @@ export class UsersService{
     .get<any[]>(this.userURL).subscribe(
       (response) => {
         if (response == null){ // if response is null we create a 1st user to instanciate the list
-          let s = 'Collaborateur';
-          let str = [s];
-          str.push(s) ;
           let d = new Date();
-          let us = new User('email','prenom','nom','cadre',str, d);
+          let us = new User('email','prenom','nom','cadre', false, false, false, d);
           this.users = [us];
           this.saveUsers();
 
@@ -69,7 +66,6 @@ export class UsersService{
         this.users = response;
         }
         this.emitUsers();
-        console.log('Chargement terminé ! ');
       },
       (error) => {
         console.log('Erreur de chargement ! ' + error);
@@ -81,8 +77,25 @@ export class UsersService{
     return this.httpClient.get<User[]>(this.userURL);
   }
 
-  searchUser(): Promise<User[]> {
-        return this.httpClient.get<User[]>(this.userURL).toPromise();
+  getUsers(): Promise<User[]> {
+    return this.httpClient.get<User[]>(this.userURL).toPromise();
   }
+
+  getUser(email: string): User {
+    console.log("getting...")
+    this.getUsersFromServer();
+    let index = this.users.findIndex(user => user.email === email);
+    this.users[index]
+
+    return this.users[index];
+  }
+
+  delete(email : string){
+    //Suppression de la base de données
+    let index = this.users.findIndex(user => user.email === email)
+    this.users.splice(index, 1);
+    this.saveUsers();
+  }
+
 
 }

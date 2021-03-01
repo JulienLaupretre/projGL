@@ -33,6 +33,7 @@ import "firebase/firestore";
 import { ModifUserComponent } from './modif-user/modif-user.component';
 import { AdminWindowComponent } from './admin-window/admin-window.component';
 import { SearchUserComponent } from './search-user/search-user.component';
+import { InfoUserComponent } from './info-user/info-user.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { SearchUserComponent } from './search-user/search-user.component';
     FormClientComponent,
     ModifUserComponent,
     AdminWindowComponent,
-    SearchUserComponent
+    SearchUserComponent,
+    InfoUserComponent
   ],
   imports: [
     BrowserModule,

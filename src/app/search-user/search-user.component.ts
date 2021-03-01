@@ -34,6 +34,12 @@ export class SearchUserComponent implements OnInit {
 
       // switch to new search observable each time the term changes
       switchMap((term: string) => this.userService.searchUsers().pipe(
+
+        map(users => users.filter(user => user != null))
+        )
+      
+      
+      .pipe(
         map(users => users.filter(user => user.email.includes(term)))
       )),
     );

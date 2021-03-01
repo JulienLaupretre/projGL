@@ -5,6 +5,7 @@ import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import "firebase/auth";
 import { User } from '../models/user';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-form-user',
@@ -18,7 +19,6 @@ export class FormUserComponent implements OnInit {
   genders = ['H', 'F',
             'Other'];
 
-  listStatus = ['Collaborateur', 'Chef de projet', 'Administrateur'];
   selectedStatus : string;
 
   submitted = false;
@@ -27,6 +27,7 @@ export class FormUserComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private usersService : UsersService,
+    private location: Location ,
     ) { }
 
   ngOnInit(): void {
@@ -41,7 +42,9 @@ export class FormUserComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       position: ['', [Validators.required]],
-      statusName: ['Collaborateur', [Validators.required]],
+      status_collab: [false],
+      status_chef: [false],
+      status_admin: [false],
       gender: ['H', ],
       birthdate: ['', ],
       birthplace: ['', ],
@@ -61,7 +64,9 @@ export class FormUserComponent implements OnInit {
     const firstName = this.signupForm.get('firstName').value;
     const lastName = this.signupForm.get('lastName').value;
     const position = this.signupForm.get('position').value;
-    const status = this.signupForm.get('statusName').value;
+    const status_collab = this.signupForm.get('status_collab').value;
+    const status_chef = this.signupForm.get('status_chef').value;
+    const status_admin = this.signupForm.get('status_admin').value;
     const birthdate = this.signupForm.get('birthdate').value;
     const birthplace = this.signupForm.get('birthplace').value;
     const gender = this.signupForm.get('gender').value;
@@ -71,7 +76,8 @@ export class FormUserComponent implements OnInit {
     const endDate = this.signupForm.get('endDate').value;
     const startDate = new Date()
     
-    const newUser = new User(email, firstName, lastName, position, status, startDate);
+    const newUser = new User(email, firstName, lastName, position, status_collab, status_chef,
+                      status_admin, startDate);
 
     if (birthdate != '' ){newUser.birthdate = birthdate}
     if (birthplace != '' ){newUser.birthplace = birthplace}
@@ -91,5 +97,9 @@ export class FormUserComponent implements OnInit {
         this.submitted = false;
       }
     );
+    this.goBack();
+  }
+  goBack(): void {
+    this.location.back();
   }
 }

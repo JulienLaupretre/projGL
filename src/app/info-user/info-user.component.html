@@ -1,30 +1,13 @@
+<button (click)="goBack()">Retour</button>
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
       
-      <h2>Créer un utilisateur</h2>
-
-      <p>* : Champ requis</p>
+      <h2>Modifier de mes informations</h2>
 
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
         <div class="form-group">
-          <label for="email">Adresse mail *</label>
-          <input type="text"
-                 id="email"
-                 class="form-control"
-                 formControlName="email">
-        </div>
-
-        <div class="form-group">
-          <label for="password">Mot de passe *</label>
-          <input type="password"
-                 id="password"
-                 class="form-control"
-                 formControlName="password">
-        </div>
-
-        <div class="form-group">
-          <label for="firstName">Prenom *</label>
+          <label for="firstName">Prenom</label>
           <input type="text"
                  id="firstName"
                  class="form-control"
@@ -32,7 +15,7 @@
         </div>
 
         <div class="form-group">
-          <label for="lastName">Nom *</label>
+          <label for="lastName">Nom</label>
           <input type="text"
                  id="lastName"
                  class="form-control"
@@ -40,7 +23,7 @@
         </div>
 
         <div class="form-group">
-          <label for="position">Fonction *</label>
+          <label for="position">Fonction</label>
           <input type="text"
                  id="position"
                  class="form-control"
@@ -48,41 +31,8 @@
         </div>
 
         <div class="form-group">
-          <label for="status">Statut :</label>
-          <br>
-
-          <label for="status" class="form-check-label">Collaborateur</label>
-          <input type="checkbox"
-          id="status_collab"
-          class="form-control"
-          formControlName="status_collab"/>
-          
-          <br>
-          <br>
-
-          <label for="status" class="form-check-label">Chef de projet</label>
-          <input type="checkbox"
-          id="status_chef"
-          class="form-control"
-          formControlName="status_chef"/>
-
-          <br>
-          <br>
-
-          
-          <label for="status" class="form-check-label">Administrateur</label>
-          <input type="checkbox"
-          id="status_admin"
-          class="form-control"
-          formControlName="status_admin"/>
-
-          <br>
-
-        </div>
-
-        <div class="form-group">
           <label for="gender">Genre</label>
-          <select class="form-control" id="gender"
+          <select class="form-control" id="gender" 
           formControlName="gender">
             <option *ngFor="let gen of genders" [ngValue]="gen">{{gen}}</option>
         </select>
@@ -138,11 +88,12 @@
 
         <button class="btn btn-primary"
                 type="submit"
-                [disabled]="signupForm.invalid">Créer le compte utilisateur</button>
-      </form>
+                [disabled]="signupForm.invalid">Enregistrer les modifications</button>
+      
+              </form>
       
       <div [hidden]="!submitted">
-        <h2>Nouveau utilisateur ajouté</h2>
+        <h2>Modifications effectuées</h2>
       </div>
 
       <div [hidden]="submitted">

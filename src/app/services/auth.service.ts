@@ -5,6 +5,7 @@ import "firebase/auth";
 @Injectable(
 )
 export class AuthService{
+
     constructor() {}
 
     signInUser(email: string, password: string){
@@ -25,7 +26,7 @@ export class AuthService{
     signOutUser(){
         firebase.auth().signOut();
     }
-
+  
   createNewUser(email: string, password: string) {
 
     // createUserWithEmailAndPassword will signIn the user with the created info
@@ -45,7 +46,7 @@ export class AuthService{
         );
       }
     );
-}
+  }
 
 }
 

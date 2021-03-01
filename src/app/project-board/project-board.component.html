@@ -1,46 +1,5 @@
+<label> Mes projets collaborateurs</label>
 <app-list-projects [listProjects] = projectsCollabo></app-list-projects>
 <label> Mes projets Chef de projet</label>
 <app-list-projects [listProjects] = projectsChefProjet></app-list-projects>
 <button (click) = "open()">Créer un nouveau projet</button>
-<!--
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add project </h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-  <form>
-    <div class = "form-group">
-      <label for="Nom de projet">Le nom du projet</label>
-      <input id="Nom de projet" name ="Nom de projet" type="text" class="form-control" placeholder="Entrer le nom du projet" [(ngModel)]="projectName">
-    </div>
-    <div class = "form-group">
-      <label for="Chef de projet">Le chef de projet</label>
-      <input id="Chef de projet" name="Chef de projet" type="text" class="form-control" placeholder="Entrer le chef du projet" [(ngModel)]="ChefName">
-    </div>
-    <div class="form-group">
-      <label for="client">Le client</label>
-      <select id="client" name="client" type="text" class="form-control" aria-placeholder="Client" [(ngModel)]="ClientName">
-          <option value="Client1"> client1</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="start_date">Date de début</label>
-      <input id="start_date" name="start_date" type="date" class="form-control" [ngModel]="StartDate | date:'yyyy-MM-dd'" (ngModelChange)="StartDate = $event">
-    </div>
-    <div class="form-group">
-      <label for="end_date">Date de fin</label>
-      <input id="end_date" name="end_date" type="date" class="form-control"  [ngModel]="EndDate | date:'yyyy-MM-dd'" (ngModelChange)="EndDate = $event">
-    </div>
-    <div class="form-group">
-      <label for="description">Description du projet</label>
-      <textarea id="description" name="description" cols="30" rows="10" placeholder ="Entrez la description du projet"class="form-control"[(ngModel)]="Description"></textarea>
-    </div>
-  </form>
-  </div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)= "AddProject()" (click)="modal.close('Save click')">Save</button>
-</div>
-</ng-template> -->

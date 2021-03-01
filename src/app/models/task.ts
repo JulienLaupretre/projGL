@@ -18,5 +18,6 @@ export class Task {
       public listTaskPredecessor? : Task[],
       public listTaskSuccessor? : Task[],
       public listTaskChild? : Task[],
+      public niveau? : number,
     ) {}
   }

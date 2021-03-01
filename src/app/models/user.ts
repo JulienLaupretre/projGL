@@ -6,7 +6,9 @@ export class User {
         public firstName: string,
         public lastName : string,
         public position : string, //fonction de l'employé
-        public listStatus : string[],
+        public collaborator : boolean = false,
+        public manager : boolean = false,
+        public admin : boolean = false,
         public startDate : Date, //auto filled 
         public actif : boolean = true,
         public birthdate? : Date,

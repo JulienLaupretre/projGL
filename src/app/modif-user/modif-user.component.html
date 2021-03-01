@@ -1,8 +1,8 @@
-<button (click)="goBack()">go back</button>
+<button (click)="goBack()">Retour</button>
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
       
-      <h2>Modification de l'utilisateur {{user.email}}</h2>
+      <h2>Modification de l'utilisateur </h2>
 
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
@@ -31,14 +31,38 @@
         </div>
 
         <div class="form-group">
-          <label for="status">Statut</label>
-          <select class="form-control"
-            id="status"
-            formControlName="statusName"
-            >
-            <option *ngFor="let status of listStatus" [ngValue]="status">{{status}}</option>
-        </select>
+          <label for="position">Statut :</label>
+          <br>
+
+          <label for="status" class="form-check-label">Collaborateur</label>
+          <input type="checkbox"
+          id="status_collab"
+          class="form-control"
+          formControlName="status_collab"/>
+          
+          <br>
+          <br>
+
+          <label for="status" class="form-check-label">Chef de projet</label>
+          <input type="checkbox"
+          id="status_chef"
+          class="form-control"
+          formControlName="status_chef"/>
+
+          <br>
+          <br>
+
+          
+          <label for="status" class="form-check-label">Administrateur</label>
+          <input type="checkbox"
+          id="status_admin"
+          class="form-control"
+          formControlName="status_admin"/>
+
+          <br>
+
         </div>
+
 
         <div class="form-group">
           <label for="gender">Genre</label>
@@ -98,11 +122,14 @@
 
         <button class="btn btn-primary"
                 type="submit"
-                [disabled]="signupForm.invalid">Modifier le compte utilisateur</button>
-      </form>
+                [disabled]="signupForm.invalid">Enregistrer les modifications</button>
+      
+                <button class="btn btn-danger" (click)="delete()">Supprimer l'utilisateur</button>
+                
+              </form>
       
       <div [hidden]="!submitted">
-        <h2>Modification effectué</h2>
+        <h2>Modifications effectuées</h2>
       </div>
 
       <div [hidden]="submitted">

@@ -19,6 +19,7 @@ export class ListProjectsComponent implements OnInit {
   
   closeResult = '';
   public projetActuel:Project;
+  
   @Input() public listProjects:Project[];
 
   public projectName:string = "";

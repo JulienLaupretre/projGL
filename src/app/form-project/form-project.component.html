@@ -1,5 +1,5 @@
 <div mat-dialog-content >
-    <h2>Créer un client
+    <h2>Créer un projet
     <button mat-icon-button class="close-button" style="float: right;" [mat-dialog-close]="true">
       <mat-icon class="close-icon" color="warn">close</mat-icon>
     </button>
@@ -10,10 +10,6 @@
       <label for="Nom de projet">Le nom du projet</label>
       <input id="Nom de projet" name ="Nom de projet" type="text" class="form-control" placeholder="Entrer le nom du projet" [(ngModel)]="projectName">
     </div>
-    <div class = "form-group">
-      <label for="Chef de projet">Le chef de projet</label>
-      <input id="Chef de projet" name="Chef de projet" type="text" class="form-control" placeholder="Entrer le chef du projet" [(ngModel)]="ChefName">
-    </div>
     <div class="form-group">
       <label for="client">Le client</label>
       <select id="client" name="client" type="text" class="form-control" aria-placeholder="Client" [(ngModel)]="ClientName">
@@ -22,19 +18,85 @@
     </div>
     <div class="form-group">
       <label for="start_date">Date de début</label>
-      <input id="start_date" name="start_date" type="date" class="form-control" [ngModel]="StartDate | date:'yyyy-MM-dd'" (ngModelChange)="StartDate = $event">
+      <input id="start_date" name="start_date" type="date" [max]="EndDate" class="form-control" [ngModel]="StartDate | date:'yyyy-MM-dd'" (ngModelChange)="StartDate = $event">
     </div>
     <div class="form-group">
       <label for="end_date">Date de fin</label>
-      <input id="end_date" name="end_date" type="date" class="form-control"  [ngModel]="EndDate | date:'yyyy-MM-dd'" (ngModelChange)="EndDate = $event">
+      <input id="end_date" name="end_date" type="date" [min]="StartDate" class="form-control"  [ngModel]="EndDate | date:'yyyy-MM-dd'" (ngModelChange)="EndDate = $event">
     </div>
     <div class="form-group">
       <label for="description">Description du projet</label>
       <textarea id="description" name="description" cols="30" rows="10" placeholder ="Entrez la description du projet"class="form-control"[(ngModel)]="Description"></textarea>
     </div>
+    <div class="form-group">
+      <label for="tasksList">Liste des tâches</label>
+      <table class="table table-bordered">
+          <thead class="thead-dark">
+              <tr>
+                  <th>Nom Tâche</th>
+                  <th> Responsable</th>
+                  <th>C. estimée</th>
+                  <th>Début</th>
+                  <th>Fin</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor = "let task of listTask">
+                  <td>{{task.name}}</td>
+                  <td>{{task.collab}}</td>
+                  <td>{{task.estimatedWorkload}}</td>
+                  <td>{{task.startDate | date:'d/M/y'}}</td>
+                  <td>{{task.endDate | date:'d/M/y'}}</td>
+                  <td><button>Details</button></td>
+              </tr>
+          </tbody>
+      </table>
+      <button name = "buttonadd" type = "button" class = "btn btn-default" > AddTask </button>
+    </div>
+    <div class = "form-group">
+      <label for="taskName">Le nom de la tache: </label>
+      <input id="taskName" name ="taskName" type="text" class="form-control" required [(ngModel)] = "taskName">
+    </div>
+    <div class="form-group">
+      <label for="collaboRes">Le collaborateur responsable: </label>
+      <select id="collaboRes" name="collaboRes" type="text" class="form-control" [(ngModel)] = "collaboRes">
+        <option *ngFor= "let user of listUsers"> {{user.firstName}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="start_dateTask">Date de début: </label>
+      <input id="start_dateTask" name="start_dateTask" type="date" [min]="StartDate" [max]="EndDate" class="form-control" [(ngModel)] = "start_dateTask">
+    </div>
+    <div class="form-group">
+      <label for="end_dateTask">Date de fin: </label>
+      <input id="end_dateTask" name="end_dateTask" type="date" [min]="start_dateTask" [max]="EndDate" class="form-control" [(ngModel)] = "end_dateTask">
+    </div>
+    <div class="form-group">
+      <label for="C.estimee">La charge estimée: </label>
+      <input id="C.estimee" name ="C.estimee" type="number" min="0" class="form-control" [(ngModel)] = "Cestimee">
+    </div>
+    <div class="form-group">
+      <label for="parentTask">La tâche mére: </label>
+      <select id="parentTask" name="parentTask" type="text" class="form-control" [(ngModel)] = "tacheMere">
+        <option *ngFor="let task of listTask"> {{task.name}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="dependencyList">Liste de dépendance: </label>
+      <select id="dependencyList" name="dependencyList" type="text" class="form-control" [(ngModel)] = "dependencylist" multiple>
+        <option></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="description">Description du projet</label>
+      <textarea id="description" name="description" cols="30" rows="10" class="form-control" [(ngModel)] = "description"></textarea>
+    </div>
+    <div><button (click)= "AddTask()">Ajouter la tâche</button><button>Annuler</button></div>
     <div class="my-btns">
       <button type="submit" class="btn btn-success" id="btn-success" (click)="AddProject()">Valider</button>
       <button mat-button mat-dialog-close class="btn btn-light" id="btn-light"  >Annuler</button>
     </div>
-    </form>
+  </form>
 </div>
