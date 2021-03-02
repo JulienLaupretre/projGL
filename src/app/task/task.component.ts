@@ -27,7 +27,6 @@ export class TaskComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    console.log(this.data);
   }
 
   // toStringDate (date:Date){
@@ -38,7 +37,7 @@ export class TaskComponent implements OnInit {
   start(){
     if(confirm("Voulez-vous vraiment démarrer cette tâche ?")){
       this.data.t.state="started";
-      // save la modif 
+      // save la modif dans la BD
     }
   }
 }
