@@ -40,6 +40,7 @@ import { ModifUserComponent } from './modif-user/modif-user.component';
 import { AdminWindowComponent } from './admin-window/admin-window.component';
 import { SearchUserComponent } from './search-user/search-user.component';
 import { InfoUserComponent } from './info-user/info-user.component';
+import { FormModifierProjetComponent } from './form-modifier-projet/form-modifier-projet.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { InfoUserComponent } from './info-user/info-user.component';
     ModifUserComponent,
     AdminWindowComponent,
     SearchUserComponent,
-    InfoUserComponent
+    InfoUserComponent,
+    FormModifierProjetComponent
   ],
   imports: [
     BrowserModule,
