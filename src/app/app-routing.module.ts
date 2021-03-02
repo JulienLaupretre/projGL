@@ -10,7 +10,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { CommonModule } from '@angular/common';
 import { ProjectBoardComponent } from'./project-board/project-board.component'
 import { InfoUserComponent } from './info-user/info-user.component';
-
+import{TaskComponent} from './task/task.component'
 
 const routes: Routes = [
  { path: 'main-window',canActivate: [AuthGuardService], component: MainWindowComponent },
@@ -21,6 +21,7 @@ const routes: Routes = [
  { path: 'users/new',canActivate: [AuthGuardService], component: FormUserComponent },
  { path: 'user-modif/:id',canActivate: [AuthGuardService], component: ModifUserComponent },
  { path: 'project', component: ProjectBoardComponent},
+ { path: 'task', component: TaskComponent},
  { path: '', component: AuthComponent},
  { path: '', redirectTo: 'main-window', pathMatch: 'full' },
  { path: '**', redirectTo: 'main-window' }
