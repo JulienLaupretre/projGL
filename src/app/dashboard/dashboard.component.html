@@ -3,10 +3,10 @@
 <h2>Mes tâches</h2>
 <fieldset class="col-4" > 
 <div class="col-md-4 mb-3">
-    <input id="searchBar2" name="searchBar2" type="text" [(ngModel)]="selectedFilter.name" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez une tâche" autofocus>
+    <input id="searchBar2" name="searchBar2" type="text" [(ngModel)]="selectedFilter.nameTaskForFilter" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez une tâche" autofocus>
     <select class="selectpicker" [(ngModel)]="selectedFilter" placeholder="select" >
         <option [ngValue]= "taskFilter" >Filter by Name</option>
-        <option [ngValue]="projectFilter" >Filter by Project</option>
+        <option [ngValue]= "projectFilter" >Filter by Project</option>
       </select>
 </div>
 <table class="table table-hover table-striped" >
@@ -17,15 +17,18 @@
             <th class="text-center"  >Charge Consommée</th>
             <th class="text-center"  >Charge Restante</th>
             <th class="text-center"  [appSort]="projetsCollab" data-order="desc" data-name="task.estimatedWorkload" >Charge Estimée</th>
-            <th class="text-center" [appSort]="projetsCollab" data-order="desc" data-name="task.endDate" scope="col">Date de Fin</th>
+            <th class="text-center" [appSort]="projetsCollab" data-order="desc" data-name="endDateForSort" scope="col">Date de Fin</th>
         </tr>
     </thead>
     <tbody  > <!-- Corps du tableau -->
-        <tr  role = "button" (click) = "open2(content, taskproject)" *ngFor = "let taskproject of projetsCollab | filterBy: taskFilter ; let iTask = index" >
+        <tr  role = "button" (click) = "open2(content, taskproject)" *ngFor = "let taskproject of projetsCollab | filterBy: selectedFilter; let iTask = index" >
             <td class="text-center" > {{taskproject.task.name}}</td>
-            <td><div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-success" role="progressbar" style="width: {{taskproject.task.progress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{taskproject.task.progress}}%</div>
-            </div>
+            <td>
+                <mat-progress-bar 
+                value="{{ taskproject.task.progress }}"
+                [appProgressBarColor]="(taskproject.task.endDate)"
+                mode="determinate">
+                </mat-progress-bar>    
             </td>
             <td class="text-center" >{{taskproject.task.usedWorkload}} jours</td>
             <td class="text-center" >{{taskproject.task.remainingWorkload}} jours</td>
@@ -137,7 +140,7 @@
             
 
             <div class="col-md-12 mb-3">
-            <input class="btn btn-danger" type="reset" value="Reset" (click)='reset()'>
+            <input class="btn btn-danger" type="button" value="Reset" (click)='reset()'>
             </div>
             <div class="col-md-12 mb-3">
                 <label for="comment">Commentaire</label>
@@ -159,10 +162,10 @@
     <h2>Tâches de mes projets</h2>
     <fieldset class="col-4" > 
     <div class="col-md-4 mb-3">
-        <input id="searchBar" name="searchBar" type="text" [(ngModel)]="selectedFilter.name" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez une tâche" autofocus>
-        <select class="selectpicker" [(ngModel)]="selectedFilter" placeholder="select" >
-            <option [ngValue]= "taskFilter" >Filter by Name</option>
-            <option [ngValue]="projectFilter" >Filter by Project</option>
+        <input id="searchBar" name="searchBar" type="text" [(ngModel)]="selectedFilter2.nameTaskForFilter" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez une tâche" autofocus>
+        <select class="selectpicker" [(ngModel)]="selectedFilter2" placeholder="select" >
+            <option [ngValue]= "taskFilter2" >Filter by Name</option>
+            <option [ngValue]="projectFilter2" >Filter by Project</option>
           </select>
     </div>
     <table class="table table-hover table-striped">
@@ -173,21 +176,32 @@
                 <th class="text-center">Charge Consommée</th>
                 <th class="text-center">Charge Restante</th>
                 <th class="text-center">Charge Estimée</th>
-                <th class="text-center" [appSort]="projectsCP" data-order="desc" data-name="listTask[0].endDate" scope="col">Date de Fin</th>
+                <th class="text-center" [appSort]="projectsCP" data-order="desc" data-name="endDateForSort" scope="col">Date de Fin</th>
             </tr>
         </thead>
-        <tbody *ngFor="let projet of projectsCP | filterBy:projectFilter; let iProject = index "   > <!-- Corps du tableau -->
-            <tr  role = "button" (click) = "open(content2, iTask, task, iProject)" *ngFor = "let task of projet.listTask | filterBy: taskFilter ; let iTask = index" >
-                <td class="text-center" > {{task.name}}</td>
-                <td><div class="progress">
-                    
-                    <div class="progress-bar progress-bar-striped progress-bar-success" role="progressbar" style="width: {{task.progress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{task.progress}}%</div>
-                </div>
+        <tbody   > <!-- *ngFor="let projet of projectsCP | filterBy:projectFilter; let iProject = index "  Corps du tableau -->
+            <tr  role = "button" (click) = "open2(content2, proj)" *ngFor = "let proj of projectsCP | filterBy: selectedFilter2; let iTask = index" >
+                <td class="text-center" > {{proj.task.name}}</td>
+                <td>
+                <!--  <mat-progress-bar 
+                    mode="determinate" 
+                    [color]= "updateColor(proj.task)"
+                    value="{{proj.task.progress}}" 
+                    >{{proj.task.progress}}%
+                 </mat-progress-bar>-->  
+                 <mat-progress-bar 
+                    value="{{ proj.task.progress }}"
+                    [appProgressBarColor]="(proj.task.endDate)"
+                    mode="determinate">
+                 </mat-progress-bar>
+                     
+                <!--     <div  class="progress-bar progress-bar-striped progress-bar-success" role="progressbar" style="width: {{proj.task.progress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{proj.task.progress}}%</div>-->
+                
                 </td>
-                <td class="text-center" >{{task.usedWorkload}} jours</td>
-                <td class="text-center" >{{task.remainingWorkload}} jours</td>
-                <td class="text-center" >{{task.estimatedWorkload}} jours</td>
-                <td class="text-center" >{{task.endDate}}</td>
+                <td class="text-center" >{{proj.task.usedWorkload}} jours</td>
+                <td class="text-center" >{{proj.task.remainingWorkload}} jours</td>
+                <td class="text-center" >{{proj.task.estimatedWorkload}} jours</td>
+                <td class="text-center" >{{proj.task.endDate}}</td>
             </tr>
             
         </tbody>
@@ -195,9 +209,11 @@
      </fieldset>
      </div>
 
+     
+
      <ng-template #content2 let-modal>
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">  Nom Projet </h4>
+          <h4 class="modal-title" id="modal-basic-title">  {{current_task_proj.name}} </h4>
           <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -218,15 +234,15 @@
                        </div>
                     <div class="col-md-12 mb-3">
                         <label for="description">Description</label>
-                        <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value= {{projectsCP[index_current_project].description}}></textarea>
+                        <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value= {{current_task_proj.description}} disabled></textarea>
                     </div>   
                     <div class="col-md-6 mb-2">
                         <label for="chefDeProjet">Chef de projet</label>
-                        <input id="chefDeProjet" value= "{{projectsCP[index_current_project].projectManager.firstName}} {{projectsCP[index_current_project].projectManager.lastName}}" name="chefDeProjet" class="form-control" disabled>   
+                        <input id="chefDeProjet" value= "{{current_task_proj.projectManager}}" name="chefDeProjet" class="form-control" disabled>   
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="emailCP">email</label>
-                        <input id="emailCP" value= "{{projectsCP[index_current_project].projectManager}}" name="emailCP" class="form-control" disabled>
+                        <input id="emailCP" value= "{{current_task_proj.projectManager}}" name="emailCP" class="form-control" disabled>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="client">Client</label>
@@ -239,11 +255,11 @@
     
                     <div class="col-md-6 mb-2">
                         <label for="dateDebut">Début</label>
-                        <input id="dateDebut" name="dateDebut" class="form-control" value="{{projectsCP[index_current_project].estimatedEndDate}}"  disabled>
+                        <input id="dateDebut" name="dateDebut" class="form-control" value="{{current_task_proj.estimatedEndDate}}"  disabled>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="dateFin">Fin</label>
-                        <input  id="dateFin" name="dateFin" class="form-control" value="{{projectsCP[index_current_project].startDate}}" disabled>
+                        <input  id="dateFin" name="dateFin" class="form-control" value="{{current_task_proj.startDate}}" disabled>
                     </div>
                 </div>
               </form>
@@ -254,37 +270,37 @@
                     <h4 class="text-center" id="modal-basic-title">  _________________________________________________ </h4>    
                    </div>
                 <div>
-                <h4 class="text-center" id="modal-basic-title">  {{current_task.name}}</h4>
+                <h4 class="text-center" id="modal-basic-title">  {{current_task_proj.task.name}}</h4>
                 <div class="col-md-12 mb-3">
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value="{{current_task.description}}"></textarea>
+                    <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value="{{current_task_proj.task.description}}" disabled></textarea>
                 </div>
                 <div class="col-md-12 mb-2">
                     <label for="collaborateur">Collaborateur</label>
-                    <input type='collaborateur' id="collaborateur" name="collaborateur" class="form-control" value={{current_task.collab}} disabled>
+                    <input type='collaborateur' id="collaborateur" name="collaborateur" class="form-control" value={{current_task_proj.task.collab}} disabled>
                 </div>
                 <div class="col-md-6 mb-2">
                     <label for="dateDebutTache">Date début</label>
-                    <input id="dateDebut" name="dateDebutTache" class="form-control" value={{current_task.startDate}} disabled>
+                    <input id="dateDebut" name="dateDebutTache" class="form-control" value={{current_task_proj.task.startDate}} disabled>
                 </div>
                 <div class="col-md-6 mb-2">
                     <label for="dateFinTache">Date de fin estimée</label>
-                    <input  id="dateFinTache" name="dateFinTache" class="form-control" value={{current_task.endDate}}  disabled>
+                    <input  id="dateFinTache" name="dateFinTache" class="form-control" value={{current_task_proj.task.endDate}}  disabled>
                 </div>
                 <h4 class="text-center" id="modal-basic-title">  _________________________________________________ </h4> 
                </div>
     
                 <div class="col-md-4 mb-3">
                     <label for="usedWorkload">Charge Consommée</label>
-                    <input type ="number" id="usedWorkload" name="usedWorkload" class="form-control" value={{current_task.usedWorkload}} #chargeCons  disabled>
+                    <input type ="number" id="usedWorkload" name="usedWorkload" class="form-control" value={{current_task_proj.task.usedWorkload}} #chargeCons  disabled>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="progress">Avancement</label>
-                    <input type ="number" id="progress" name="progress" class="form-control"  value={{current_task.progress}} #avancement disabled>
+                    <input type ="number" id="progress" name="progress" class="form-control"  value={{current_task_proj.task.progress}} #avancement disabled>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="remainingWorkload">Charge Restante</label>
-                    <input type ="number" id="remainingWorkload" name="remainingWorkload"  value={{current_task.remainingWorkload}} placeholder="en jours"class="form-control" #chargeRestante disabled>
+                    <input type ="number" id="remainingWorkload" name="remainingWorkload"  value={{current_task_proj.task.remainingWorkload}} placeholder="en jours"class="form-control" #chargeRestante disabled>
                 </div>
             </div>
             <div class="border text-center">

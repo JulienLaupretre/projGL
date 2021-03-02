@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatTabsModule} from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
@@ -27,7 +27,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormAvancementComponent } from './form-avancement/form-avancement.component';
 import { DashboardService } from './services/dashboard.service';
 import { SortDirective } from './directive/sort.directive';
-
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import {AddInfoService} from './services/add-info.service';
@@ -40,7 +39,8 @@ import { ModifUserComponent } from './modif-user/modif-user.component';
 import { AdminWindowComponent } from './admin-window/admin-window.component';
 import { SearchUserComponent } from './search-user/search-user.component';
 import { InfoUserComponent } from './info-user/info-user.component';
-
+import { ProgressBarColor } from './directive/progress-bar-color';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +60,7 @@ import { InfoUserComponent } from './info-user/info-user.component';
     FormClientComponent,
     FormAvancementComponent,
     SortDirective,
+    ProgressBarColor,
     ModifUserComponent,
     AdminWindowComponent,
     SearchUserComponent,
@@ -76,7 +77,8 @@ import { InfoUserComponent } from './info-user/info-user.component';
     MatDialogModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FilterPipeModule
+    FilterPipeModule,
+    MatProgressBarModule
   ],
   providers: [
     AuthService,

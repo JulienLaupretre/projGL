@@ -10,8 +10,7 @@ import { TaskProject } from '../models/taskProject';
 import { User } from '../models/user';
 import { Subscription } from 'rxjs';
 import firebase from "firebase/app";
-
-
+import { UsersService } from '../services/users.service';
 
 
 @Component({
@@ -28,16 +27,19 @@ export class DashboardComponent implements OnInit{
     
  
   
-  current_user:string = "dahimihaithem@gmail.com";
+  current_user:string = "jean.doucet@pops.fr";
+  current_user2:any;
+  current_date:Date =  new Date("2021-03-09");
 
   projects : Project [] = [];
-  projectsCP :  Project [] = [];
+  projectsCP :  TaskProject [] = [];
   
   projetsCollab: TaskProject[] = [];
 
   projetsSubscription: Subscription;
 
   projetsCollabSubscription: Subscription;
+  userSubscription : Subscription;
 
   
   current_task_proj:TaskProject;
@@ -55,15 +57,24 @@ export class DashboardComponent implements OnInit{
   disabledChargeRestante : boolean = false;
   listNgModel_form: Set<string> = new Set<string>();
 
-  taskFilter: any = { name: '' };
+  taskFilter: any = {nameTaskForFilter: '' };
   projectFilter: any = {name: ''};
   selectedFilter: any = this.taskFilter;
+
+  taskFilter2: any = {nameTaskForFilter: '' };
+  projectFilter2: any = {name: ''};
+  selectedFilter2: any = this.taskFilter2;
+
+
   private dashboardService : DashboardService;
+  private usersService : UsersService;
+  
 
   constructor( private modalService: NgbModal, private filter: FilterPipe) {  
     this.dashboardService = new DashboardService(this.current_user);
-    //this.dashboardService.getProjetTaskUser (this.current_user);
-    //this.dashboardService.getProjectsByCollab(this.current_user);
+    this.usersService = new UsersService();
+    this.current_user2 = this.usersService.getUserBy(this.current_user);
+    console.log(this.current_user2);
   }
   
   ngOnInit(): void {
@@ -77,7 +88,7 @@ export class DashboardComponent implements OnInit{
     this.dashboardService.emitProjects();*/
 
     this.projetsSubscription = this.dashboardService.projectCPSubject.subscribe(
-      (projects: Project[]) => {
+      (projects: TaskProject[]) => {
         this.projectsCP = projects; 
       }
     );
@@ -88,7 +99,6 @@ export class DashboardComponent implements OnInit{
        this.projetsCollab = projects;  
         console.log("icii"); 
         console.log(this.projetsCollab);
-        //this.projetsCollab[0]["task"];
         console.log("icii2");
       }
     );
@@ -165,6 +175,8 @@ export class DashboardComponent implements OnInit{
     }
   }
 
+  
+
   reset()
     {
       this.listNgModel_form.clear();
@@ -175,20 +187,6 @@ export class DashboardComponent implements OnInit{
       this.disabledAvancement = false;
       this.disabledChargeRestante = false;
     }
-    
-  
-    
-  private getClassProgressBar(index: number){
-    /*if(index == 1){
-      this.tasks[index].barrevalue = "progress-bar progress-bar-striped danger";
-    }
-    if(index == 2){
-      this.tasks[index].barrevalue = "progress-bar progress-bar-striped progress-bar-warning";
-    }
-    if(index == 3){
-      this.tasks[index].barrevalue = "progress-bar progress-bar-striped progress-bar-success";
-    }*/
-  }
 
   ngOnDestroy() {
     this.projetsSubscription.unsubscribe();

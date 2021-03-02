@@ -12,6 +12,8 @@ export class TaskProject {
         public state? : string,
         public startDate? : Date,
         public actualEndDate? : Date,
+        public endDateForSort? : Date,
+        public nameTaskForFilter?: string,
         public task? : Task
     ){
 

@@ -3,13 +3,16 @@ import { User } from '../models/user';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http'
 import { Observable, of } from 'rxjs';
+import firebase from "firebase/app";
+import "firebase/database";
+import DataSnapshot = firebase.database.DataSnapshot;
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService{
-
-  constructor(private httpClient: HttpClient) { }
+  private httpClient: HttpClient;
+  constructor() { }
 
   public user: User;
 
@@ -70,6 +73,21 @@ export class UsersService{
       }
     )
   }
+
+  getUserBy(mail:string) {
+    return new Promise(
+      (resolve, reject) => {
+        firebase.database().ref('/users').orderByChild("email").equalTo(mail).once('value').then(
+          (data: DataSnapshot) => {
+            resolve(data.val());
+          }, (error) => {
+            reject(error);
+          }
+        );
+      }
+    );
+  }
+
 
   searchUsers(): Observable<User[]> {
     return this.httpClient.get<User[]>(this.userURL);
