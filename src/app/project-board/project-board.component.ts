@@ -59,13 +59,12 @@ export class ProjectBoardComponent implements OnInit {
           proj.listTask.filter(task => task.collab != null).some(isCollab) || //Case tache fille lvl 0
           proj.listTask.filter(task => task.listTaskChild != null).some(isCollab2) || //Case tache fille lvl 1
           proj.listTask.filter(task => task.listTaskChild != null && task.listTaskChild.some(haveChild)) 
-            .some(isCollab3) ) //Case tache fille lvl 2 
-          );
-         
+            .some(isCollab3) ); //Case tache fille lvl 2 
+                   
       }
     );
     this.ProjectsService.emitProjectsubject();
-  }
+    }
 
   open(){
     const dialogConfig = new MatDialogConfig();

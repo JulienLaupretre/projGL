@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
 import { AddInfoService } from '../services/add-info.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import firebase from 'firebase/app';
@@ -29,7 +28,6 @@ export class FormProjectComponent implements OnInit {
   public projetActuel:Project;
   public listTask:Task[] = [];
   constructor(public ProjectsService: AddInfoService, 
-              private router: Router, 
               public dialogRef:MatDialogRef<FormProjectComponent>,
               public clService:ClientsService) { }
   
