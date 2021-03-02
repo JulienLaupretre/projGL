@@ -30,9 +30,9 @@ import { SortDirective } from './directive/sort.directive';
 
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
-import {AddInfoService} from './services/add-info.service';
+import { AddInfoService } from './services/add-info.service';
 import { ClientsService } from './services/clients.service';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import "firebase/auth";
 import "firebase/firestore";
@@ -87,7 +87,9 @@ import { InfoUserComponent } from './info-user/info-user.component';
   ],
   bootstrap: [AppComponent],
   entryComponents:[FormClientComponent,
-    FormProjectComponent]
+    FormProjectComponent,
+    ListTasksComponent,
+  ]
 
 
 })
