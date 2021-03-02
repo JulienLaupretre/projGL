@@ -54,7 +54,8 @@ export class ProjectBoardComponent implements OnInit {
         const isCollab3 = (t) => t.listTaskChild.some(isCollab2);
 
         this.projectsChefProjet = listpr.filter(proj => proj.projectManager === email);
-         this.projectsCollabo= listpr.filter(proj => proj.state =='started' && proj.listTask != null && (
+       
+          this.projectsCollabo= listpr.filter(proj => proj.hasOwnProperty("listTask")).filter(proj => 
           proj.listTask.filter(task => task.collab != null).some(isCollab) || //Case tache fille lvl 0
           proj.listTask.filter(task => task.listTaskChild != null).some(isCollab2) || //Case tache fille lvl 1
           proj.listTask.filter(task => task.listTaskChild != null && task.listTaskChild.some(haveChild)) 
