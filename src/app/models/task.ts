@@ -5,8 +5,8 @@ export class Task {
     constructor(
       public id: number,
       public name: string,
-      public state: string,
-      public collab? : string,
+      public state: string, // "started" "not started" "abandoned" "finished"
+      public collab? : string, // email user 
       public startDate? : Date,
       public actualStartDate? : Date,
       public endDate? : Date,
@@ -15,10 +15,10 @@ export class Task {
       public estimatedWorkload? : number,
       public usedWorkload? : number,
       public remainingWorkload? : number,
-      public progress? : number,
+      public progress? : number, // en pourcentage
       public listTaskPredecessor? : string[],
       public listTaskSuccessor? : string[],
       public listTaskChild? : Task[],
-      public niveau? : number,
+      public niveau? : number, 
     ) {}
   }
