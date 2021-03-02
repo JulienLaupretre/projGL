@@ -13,7 +13,7 @@
     <div class="form-group">
       <label for="client">Le client</label>
       <select id="client" name="client" type="text" class="form-control" aria-placeholder="Client" [(ngModel)]="ClientName">
-          <option value="Client1"> client1</option>
+          <option *ngFor = "let client of listClients"> {{client.name}} </option>
       </select>
     </div>
     <div class="form-group">
@@ -52,9 +52,10 @@
               </tr>
           </tbody>
       </table>
-      <button name = "buttonadd" type = "button" class = "btn btn-default" > AddTask </button>
+      <button name = "buttonadd" type = "button" class = "btn btn-default" (click)="openTaskForm()"> AddTask </button>
     </div>
-    <div class = "form-group">
+    <div *ngIf="this.taskFormOpened">
+    <div  class = "form-group">
       <label for="taskName">Le nom de la tache: </label>
       <input id="taskName" name ="taskName" type="text" class="form-control" required [(ngModel)] = "taskName">
     </div>
@@ -80,22 +81,38 @@
     <div class="form-group">
       <label for="parentTask">La tâche mére: </label>
       <select id="parentTask" name="parentTask" type="text" class="form-control" [(ngModel)] = "tacheMere">
-        <option *ngFor="let task of listTask"> {{task.name}}</option>
+        <ng-container *ngFor="let task of listTask">
+          <option style="font-weight: bold;" > {{task.name}}</option>
+          <ng-container *ngIf="hasTaskFille(task)">
+            <option *ngFor="let taskFille of task.listTaskChild"> {{taskFille.name}}</option>
+          </ng-container>
+        </ng-container>
       </select>
     </div>
     <div class="form-group">
       <label for="dependencyList">Liste de dépendance: </label>
       <select id="dependencyList" name="dependencyList" type="text" class="form-control" [(ngModel)] = "dependencylist" multiple>
-        <option></option>
+        <ng-container *ngFor="let task of listTask">
+          <option style="font-weight: bolder;" > {{task.name}}</option>
+          <ng-container *ngIf="hasTaskFille(task)">
+            <ng-container *ngFor="let taskFille of task.listTaskChild">
+              <option style="font-weight: bold;"> {{taskFille.name}}</option>
+              <ng-container *ngIf="hasTaskFille(taskFille)">
+                <option *ngFor="let taskFille2 of taskFille.listTaskChild">{{taskFille2.name}}</option>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
       </select>
     </div>
     <div class="form-group">
       <label for="description">Description du projet</label>
       <textarea id="description" name="description" cols="30" rows="10" class="form-control" [(ngModel)] = "description"></textarea>
     </div>
-    <div><button (click)= "AddTask()">Ajouter la tâche</button><button>Annuler</button></div>
+    <div><button (click)= "AddTask()" [disabled]="taskValid()">Ajouter la tâche</button><button>Annuler</button></div>
+  </div>
     <div class="my-btns">
-      <button type="submit" class="btn btn-success" id="btn-success" (click)="AddProject()">Valider</button>
+      <button type="submit" class="btn btn-success" id="btn-success" (click)="AddProject()" [disabled]="projectValid()">Valider</button>
       <button mat-button mat-dialog-close class="btn btn-light" id="btn-light"  >Annuler</button>
     </div>
   </form>

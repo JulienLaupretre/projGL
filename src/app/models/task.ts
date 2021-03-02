@@ -5,7 +5,7 @@ export class Task {
     constructor(
       public id: number,
       public name: string,
-      public state:string,
+      public state: string,
       public collab? : string,
       public startDate? : Date,
       public actualStartDate? : Date,
@@ -16,8 +16,8 @@ export class Task {
       public usedWorkload? : number,
       public remainingWorkload? : number,
       public progress? : number,
-      public listTaskPredecessor? : Task[],
-      public listTaskSuccessor? : Task[],
+      public listTaskPredecessor? : string[],
+      public listTaskSuccessor? : string[],
       public listTaskChild? : Task[],
       public niveau? : number,
     ) {}
