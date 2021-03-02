@@ -41,7 +41,6 @@ export class ProjectBoardComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
 
-
       let email = firebase.auth().currentUser.email; 
   
       this.projectsSubscription = this.ProjectsService.projectSubject.subscribe(
