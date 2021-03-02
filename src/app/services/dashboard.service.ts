@@ -53,9 +53,10 @@ export class DashboardService{
     var projPrec:any;
     firebase.database().ref('/projects')
     .on('child_added', (data: DataSnapshot)=>{
-      
       projet = data.val();
      
+      if (projet.hasOwnProperty("listTask")){
+
       listTask = projet.listTask;
       if(projPrec != projet)
       {
@@ -70,6 +71,7 @@ export class DashboardService{
         }
       }  
      }
+    }
       this.emitProjectsCollab(); 
     });
     

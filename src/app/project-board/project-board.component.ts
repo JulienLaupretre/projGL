@@ -28,7 +28,7 @@ export class ProjectBoardComponent implements OnInit {
   closeResult = '';
   projectsSubscription: Subscription;
   public projectsChefProjet: Project[] = [];
-  public projectsCollabo: Project[];
+  public projectsCollabo: Project[] = [];
 
   users : User[];
   user : User;
@@ -54,12 +54,14 @@ export class ProjectBoardComponent implements OnInit {
         const isCollab3 = (t) => t.listTaskChild.some(isCollab2);
 
         this.projectsChefProjet = listpr.filter(proj => proj.projectManager === email);
-         this.projectsCollabo= listpr.filter(proj => proj.state =='started' && proj.listTask != null && (
+       
+          this.projectsCollabo= listpr.filter(proj => proj.hasOwnProperty("listTask")).filter(proj => 
           proj.listTask.filter(task => task.collab != null).some(isCollab) || //Case tache fille lvl 0
           proj.listTask.filter(task => task.listTaskChild != null).some(isCollab2) || //Case tache fille lvl 1
           proj.listTask.filter(task => task.listTaskChild != null && task.listTaskChild.some(haveChild)) 
             .some(isCollab3) ) //Case tache fille lvl 2 
           );
+         
       }
     );
     this.ProjectsService.emitProjectsubject();

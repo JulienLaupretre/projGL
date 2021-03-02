@@ -167,5 +167,15 @@ export class ListProjectsComponent implements OnInit {
     }
   }
 
+  hasClient(project:Project){
+    return project.hasOwnProperty('client');
+  }
+
+  hasStartDate(project:Project){
+    return project.hasOwnProperty('startDate');
+  }
+  hasEndDate(project:Project){
+    return project.hasOwnProperty('estimatedEndDate');
+  }
 
 }
