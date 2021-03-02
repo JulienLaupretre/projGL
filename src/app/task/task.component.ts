@@ -37,7 +37,7 @@ export class TaskComponent implements OnInit {
 
   start(){
     if(confirm("Voulez-vous vraiment démarrer cette tâche ?")){
-      this.data.t.state="demarree";
+      this.data.t.state="started";
       // save la modif 
     }
   }
