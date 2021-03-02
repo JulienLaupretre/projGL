@@ -9,7 +9,7 @@ import { SearchUserComponent} from './search-user/search-user.component'
 import { AuthGuardService } from './services/auth-guard.service';
 import { CommonModule } from '@angular/common';
 import { InfoUserComponent } from './info-user/info-user.component';
-import {FormModifierProjetComponent} from './form-modifier-projet/form-modifier-projet.component'
+import { FormModifierProjetComponent } from './form-modifier-projet/form-modifier-projet.component'
 
 const routes: Routes = [
  { path: 'main-window',canActivate: [AuthGuardService], component: MainWindowComponent },

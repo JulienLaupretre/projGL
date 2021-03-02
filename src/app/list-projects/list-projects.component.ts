@@ -24,6 +24,7 @@ export class ListProjectsComponent implements OnInit {
   public projetActuel:Project;
   
   @Input() public listProjects:Project[];
+  @Input() public tabManager:boolean;
 
   public projectName:string = "";
   public ChefName:string = "";
@@ -47,7 +48,7 @@ export class ListProjectsComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
 
-     ) { }
+    ) { }
 
   public listClients: Client[];
   clientSubscription: Subscription;

@@ -1,5 +1,5 @@
 <label> Mes projets collaborateurs</label>
-<app-list-projects [listProjects] = projectsCollabo></app-list-projects>
+<app-list-projects [listProjects] = projectsCollabo [tabManager] = false></app-list-projects>
 <label> Mes projets chef de projet</label>
-<app-list-projects [listProjects] = projectsChefProjet></app-list-projects>
+<app-list-projects [listProjects] = projectsChefProjet [tabManager] = true></app-list-projects>
 <button (click) = "open()">Créer un nouveau projet</button>
