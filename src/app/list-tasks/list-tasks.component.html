@@ -7,9 +7,10 @@
 
         <li *ngFor="let task of listTask">
             <button id="task" 
-            >{{task.name}}</button>
+            (click)= "open(task)">
+            {{task.name}}
+            </button>
         </li>
-
 
     </div> 
 </div>  

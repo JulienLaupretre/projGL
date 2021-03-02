@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
 import firebase from "firebase/app";
 import "firebase/auth";
+import { TaskComponent } from '../task/task.component';
 
 @Component({
   selector: 'app-list-tasks',
@@ -20,6 +21,7 @@ export class ListTasksComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ListTasksComponent>,
     @Inject(MAT_DIALOG_DATA) public projet:Project,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -41,10 +43,18 @@ export class ListTasksComponent implements OnInit {
       });
     }
     );
-    
+
     this.listTask = this.listTask1.concat(this.listTask2).concat(this.listTask3);
 
+  }
 
+  open(task : Task){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = "60%";
+
+    dialogConfig.data = {t : task, p : this.projet};
+
+    this.dialog.open(TaskComponent, dialogConfig);
   }
 
 }
