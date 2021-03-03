@@ -20,13 +20,11 @@
             <thead>
                 <tr>
                     <th>Tâches prédécesseures</th>
-                    <th>Date de fin </th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor = "let t of task.listTaskPredecessor">
-                    <td>{{t.name}}</td>
-                    <td>{{toStringDate(t.actualEndDate)}}</td> 
+                    <td>{{t}}</td>
                 </tr>
             </tbody>
         </table>
@@ -37,13 +35,11 @@
             <thead>
                 <tr>
                     <th>Tâches successeures </th>
-                    <th>Date de début</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor = "let t of task.listTaskSuccessor">
-                    <td>{{t.name}}</td>
-                    <td>{{toStringDate(t.actualStartDate)}}</td> 
+                    <td>{{t}}</td>
                 </tr>
             </tbody>
         </table>
