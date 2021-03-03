@@ -71,8 +71,8 @@ export class DashboardComponent implements OnInit{
   
   constructor( private modalService: NgbModal, private filter: FilterPipe) {  
     this.dashboardService = new DashboardService(this.current_user);
-    this.usersService = new UsersService();
-    this.current_user2 = this.usersService.getUserBy(this.current_user);
+    //this.usersService = new UsersService();
+    //this.current_user2 = this.usersService.getUserBy(this.current_user);
   }
   
   ngOnInit(): void {
