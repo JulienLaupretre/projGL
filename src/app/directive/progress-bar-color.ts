@@ -6,7 +6,6 @@ selector: '[appProgressBarColor]'
 export class ProgressBarColor implements OnChanges{
 static counter = 0;
 color: string;
-current_date : Date = new Date();
 @Input() appProgressBarColor;
 styleEl:HTMLStyleElement = document.createElement('style');
 
@@ -25,17 +24,40 @@ this.updateColor();
 }
 
 updateColor(): void{
-  var d = this.current_date.toISOString().substring(0, 10);
-  if (this.appProgressBarColor > d){
-    this.appProgressBarColor = 'green'
+  //var d = this.current_date.toISOString().substring(0, 10);
+  //current_date : Date = new Date();
+  var startDate = new Date();
+  var endDateTask = new Date(this.appProgressBarColor.endDate);
+  var noOfDaysToAdd = this.appProgressBarColor.remainingWorkload, count = 0;
+  if(noOfDaysToAdd>0)
+  {
+  while(count < noOfDaysToAdd){
+      var endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+      if(endDate.getDay() != 0 && endDate.getDay() != 6){
+        count++;
+      }
   }
-  else if( this.appProgressBarColor == d)
+  console.log(endDateTask);
+  console.log(endDate);
+  console.log((endDateTask.getTime() - endDate.getTime())/(1000*3600*24));
+  console.log();
+  if (endDate < endDateTask){
+    this.appProgressBarColor = 'green';
+  }
+  else if(endDate > endDateTask && (endDateTask.getTime() - endDate.getTime())/(1000*3600*24) > 1)
   {
     this.appProgressBarColor = 'orange';
   }
   else{
-    this.appProgressBarColor = 'red'
+    this.appProgressBarColor = 'red';
   }
+}
+else
+{
+  this.appProgressBarColor = 'blue';
+}
+
+  
  // console.log(this.appProgressBarColor)
   
   // update dynamic style with the uniqueAttr

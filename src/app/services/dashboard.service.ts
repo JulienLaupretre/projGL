@@ -46,19 +46,28 @@ export class DashboardService{
       );
   }
 
-  parcoursSousTache(projet:Project, listTask : Task[], user:String)
+  parcoursSousTache(projet:Project, listTask : Task[], user:String, path:string)
   {
     for (let t of listTask)
       {
+        
         if(t.hasOwnProperty('listTaskChild'))
         {
-          this.parcoursSousTache(projet,t.listTaskChild, user);
+          //path+='/listTaskChild';
+          console.log(t.name);
+          console.log(t.id);
+         // path+="/" + t.id + '/listTaskChild' ;
+          console.log(path);
+          this.parcoursSousTache(projet,t.listTaskChild, user, path + "/" + t.id + '/listTaskChild');
         }
         else
         {
-          if(t.collab==user)
+          if(t.collab==user && t.state != "not started")
           {
-            this.projectsCollab.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate,  t.endDate, t.name, t));
+            path+='/'+t.id;
+            console.log(t.name);
+            console.log(path);
+            this.projectsCollab.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate, path,  t.endDate, t.name, t));
           }
         }
       }
@@ -66,17 +75,40 @@ export class DashboardService{
 
   parcoursSousTacheCP(projet:Project, listTask : Task[])
   {
+
     for (let t of listTask)
       {
+       
         if(t.hasOwnProperty('listTaskChild'))
         {
           this.parcoursSousTacheCP(projet,t.listTaskChild);
         }
         else
         {
-          this.projectsCP.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate,  t.endDate, t.name, t));
+            this.projectsCP.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate, "/projects",  t.endDate, t.name, t));
         }
       }
+  }
+
+  getProjectsByCP(user:string)
+  {
+   
+    firebase.database().ref('/projects').orderByChild("projectManager").equalTo(user).on('child_added', (data: DataSnapshot)=>
+    {
+      var projet = data.val() ? data.val() : [];
+      if(projet.state != "not started")
+      {
+        if(projet.hasOwnProperty("listTask"))
+        {
+          var listTask = projet.listTask;
+          this.parcoursSousTacheCP(projet, listTask);
+        }
+      }
+      
+      
+      this.emitProjectsCP();
+    });   
+   
   }
   
   getProjectsByCollab(user:string)
@@ -88,9 +120,15 @@ export class DashboardService{
     .on('child_added', (data: DataSnapshot)=>{
       
       projet = data.val();
-     
-      listTask = projet.listTask;
-      this.parcoursSousTache(projet,listTask,user);
+      if(projet.state != "not started")
+      {
+        if(projet.hasOwnProperty("listTask"))
+        {
+          listTask = projet.listTask;
+          this.parcoursSousTache(projet,listTask,user,'/projects/'+ projet.id + '/listTask');
+        }
+      }
+      
       this.emitProjectsCollab(); 
     });
     
@@ -128,18 +166,7 @@ firebase.database().ref('/projects').orderByChild("projectManager").equalTo(mail
       )
 }*/
 
- getProjectsByCP(user:string)
-  {
-   
-    firebase.database().ref('/projects').orderByChild("projectManager").equalTo(user).on('child_added', (data: DataSnapshot)=>
-    {
-      var projet = data.val() ? data.val() : [];
-      var listTask = projet.listTask;
-      this.parcoursSousTacheCP(projet, listTask);
-      this.emitProjectsCP();
-    });   
-   
-  }
+
 
   constructor(user:string)
   {

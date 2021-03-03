@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit{
     
  
   
-  current_user:string = "jean.doucet@pops.fr";
+  current_user:string = "Jean";//"Marie";//"jean.doucet@pops.fr";//"Teo";//"Ines";
   current_user2:any;
   current_date:Date =  new Date("2021-03-09");
 
@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit{
     this.dashboardService = new DashboardService(this.current_user);
     this.usersService = new UsersService();
     this.current_user2 = this.usersService.getUserBy(this.current_user);
-    console.log(this.current_user2);
+    //console.log(this.current_user2);
   }
   
   ngOnInit(): void {
@@ -97,9 +97,9 @@ export class DashboardComponent implements OnInit{
     this.projetsCollabSubscription = this.dashboardService.projectCollabSubject.subscribe(
       (projects: TaskProject[]) => {
        this.projetsCollab = projects;  
-        console.log("icii"); 
-        console.log(this.projetsCollab);
-        console.log("icii2");
+        //console.log("icii"); 
+        //console.log(this.projetsCollab);
+        //console.log("icii2");
       }
     );
     this.dashboardService.emitProjectsCollab();
@@ -107,7 +107,23 @@ export class DashboardComponent implements OnInit{
 
    open2(content:any, taskproject:TaskProject)
    {
+    this.reset();
     this.current_task_proj = taskproject;
+    console.log("okkkkk");
+    console.log(this.current_task_proj.task.actualEndDate);
+    console.log(new Date().toISOString().substring(0, 10));
+    console.log(new Date());
+    if(this.current_task_proj.task.state == "finished")
+    {
+      this.chargeRestante_form = this.current_task_proj.task.remainingWorkload;
+      this.chargeCons_form =  this.current_task_proj.task.usedWorkload;
+      this.avancement_form =  this.current_task_proj.task.progress;
+
+      this.disabledChargeRestante = true;
+      this.disabledChargCons = true;
+      this.disabledAvancement = true;
+
+    }
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -116,6 +132,7 @@ export class DashboardComponent implements OnInit{
    }
 
    open(content : any, i: number, task:Task, iProject:number ) {
+   
     this.current_task = task;
     this.index_current_task = i;
     this.index_current_project = iProject;
@@ -124,6 +141,7 @@ export class DashboardComponent implements OnInit{
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+    
   }
   
   private getDismissReason(reason: any): string {
@@ -134,15 +152,21 @@ export class DashboardComponent implements OnInit{
     } else {
       return `with: ${reason}`;
     }
+    
   }
 
   onSubmit(form: NgForm) {
     this.current_task_proj.task.usedWorkload = form.value['usedWorkload'];
     this.current_task_proj.task.progress = form.value['progress'];
     this.current_task_proj.task.remainingWorkload = form.value['remainingWorkload'];
-    let idTask =  this.current_task_proj.task.id;
-    firebase.database().ref('/projects/' + this.current_task_proj.id + '/listTask/' + idTask).set( this.current_task_proj.task);
-    console.log('/projects/' + this.current_task_proj.id + '/listTask/' + idTask);
+    if(this.current_task_proj.task.progress == 100)
+    {
+      this.current_task_proj.task.state = "finished";
+      //this.current_task_proj.task.actualEndDate = new Date();
+    }
+    //let idTask =  this.current_task_proj.task.id;
+    firebase.database().ref(this.current_task_proj.path).set( this.current_task_proj.task);
+    //console.log(this.current_task_proj.path);
     this.ngOnInit();
     this.modalService.dismissAll(); //dismiss the modal
   }
@@ -191,5 +215,4 @@ export class DashboardComponent implements OnInit{
   ngOnDestroy() {
     this.projetsSubscription.unsubscribe();
   }
-
 }
