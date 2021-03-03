@@ -42,6 +42,10 @@ export class ProjectBoardComponent implements OnInit {
     async ngOnInit(): Promise<void> {
 
       let email = firebase.auth().currentUser.email; 
+
+      this.userService.getUsersFromServer();
+      this.users = await this.userService.getUsers();
+      this.user = this.users.find(el => el != null && el.email===email);
   
       this.projectsSubscription = this.ProjectsService.projectSubject.subscribe(
         (listpr: Project[]) => {

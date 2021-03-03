@@ -15,22 +15,22 @@ import { Client } from '../models/client';
 })
 export class AddInfoService {
 
-  idProject:number;
+  idProject : number;
+
+  public tasks : Task[] = [];
+  public tasks1 : Task[] = [];
+  public tasks2 : Task[] = [];
+  public listProject : Project[] = [];
+  public listClients : Client[];
+
+  projectSubject = new Subject<Project[]>();
+  clientSubject = new Subject<Client[]>();
+
   constructor(private httpClient:HttpClient) { 
     this.getListProjectsFromServer();
     this.getListClientsFromServer();
     this.getListUsersFromServer();
   }
-  projectSubject = new Subject<Project[]>();
-  clientSubject = new Subject<Client[]>();
-
-
-  public tasks:Task[] = [];
-  public tasks1:Task[] = [];
-  public tasks2:Task[] = [];
-  public listProject:Project[]= [];
-  public listClients: Client[];
-
 
   saveProjects(){
     firebase.database().ref('/projects').set(this.listProject);
@@ -56,16 +56,12 @@ export class AddInfoService {
     this.projectSubject.next(this.listProject);
   }
 
-
   listTasks:Task[];
   tasksSubject = new Subject<Task[]>();
 
   saveTasks(){
     firebase.database().ref('/listsOfTasks/'+this.idProject).set(this.listTasks);
   }
-  
-
-  
   
   getListClientsFromServer(){
     firebase.database().ref('/clients')
@@ -97,6 +93,23 @@ export class AddInfoService {
   emitUserSubject()
   {
     this.usersSubject.next(this.users);
+  }
+
+  startProject(proj : Project){
+    //console.log(this.listProject);
+    proj.state = "started";
+    let index = this.listProject.findIndex(p => p === proj);
+    this.listProject[index] = proj;
+
+    this.saveProjects();
+  }
+
+  
+  endProject(proj : Project){
+    let index = this.listProject.findIndex(p => p === proj);
+    this.listProject[index] = proj;
+
+    this.saveProjects();
   }
 
 }

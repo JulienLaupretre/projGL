@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
+import { AddInfoService } from '../services/add-info.service';
 
 @Component({
   selector: 'app-task',
@@ -23,7 +24,7 @@ export class TaskComponent implements OnInit {
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public data:{t : Task, p : Project},
-
+    public ProjectsService: AddInfoService, 
   ) { }
   
   ngOnInit(): void {
@@ -43,7 +44,9 @@ export class TaskComponent implements OnInit {
   start(){
     if(confirm("Voulez-vous vraiment démarrer cette tâche ?")){
       this.data.t.state="started";
+      //this.ProjectsService.
       // save la modif dans la BD
+      //TODO
     }
   }
 
