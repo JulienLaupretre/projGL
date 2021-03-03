@@ -28,8 +28,6 @@ export class AddInfoService {
   public tasks:Task[] = [];
   public tasks1:Task[] = [];
   public tasks2:Task[] = [];
-  //collab =new User(1, "haithem", "dahimi", "dahimihaithem@gmail.com", "employee", ["employee"], new Date(), new Date(),"", "", "", "","",new Date() );
-
   public listProject:Project[]= [];
   public listClients: Client[];
 
@@ -65,6 +63,7 @@ export class AddInfoService {
   saveTasks(){
     firebase.database().ref('/listsOfTasks/'+this.idProject).set(this.listTasks);
   }
+  
 
   
   

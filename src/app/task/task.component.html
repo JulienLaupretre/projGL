@@ -4,15 +4,15 @@
 <td>{{task.usedWorkload}}</td>
 <td>{{task.remainingWorkload}}</td>
 <td>{{task.endDate | date:'d/M/y'}}</td>-->
-<h2><label>Nom de la tâche : </label> {{task.name}}</h2>
+<h2><label>Nom de la tâche : </label> {{data.t.name}}</h2>
 <ul class="list-group">
     <li>
-        <div id="un" ><label>Projet :</label> Projet A</div> 
-        <div id="un"><label>Chef du Projet :</label> Jean Doucet</div>
+        <div id="un" ><label>Projet :</label> {{data.p.name}}</div> 
+        <div id="un"><label>Chef du Projet :</label> {{data.p.projectManager}}</div>
     </li> 
     <li>
-        <div id="deux" ><label>Date de début :</label> {{toStringDate(task.actualStartDate)}} </div> 
-        <div id="deux"><label>Date de fin :</label> {{toStringDate(task.actualEndDate)}}</div>
+        <div id="deux" ><label>Date de début :</label> {{data.t.actualStartDate}}</div> 
+        <div id="deux"><label>Date de fin :</label> {{data.t.actualEndDate}}</div>
     </li> 
     <li>
         <div id="quatre">
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor = "let t of task.listTaskPredecessor">
+                <tr *ngFor = "let t of data.t.listTaskPredecessor">
                     <td>{{t}}</td>
                 </tr>
             </tbody>
@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor = "let t of task.listTaskSuccessor">
+                <tr *ngFor = "let t of data.t.listTaskSuccessor">
                     <td>{{t}}</td>
                 </tr>
             </tbody>
@@ -47,14 +47,14 @@
     </li>
 
     <li>
-        <div id="trois" ><label>Charge estimée :</label> {{task.estimatedWorkload}} j</div> 
-        <div id="trois"><label>Avancement :</label> {{task.progress}}%</div>
-        <div id="trois"><label>Charge consommée :</label> {{task.usedWorkload}} j</div>
-        <div id="trois"><label>Charge restante  :</label> {{task.remainingWorkload}} j</div>
+        <div id="trois" ><label>Charge estimée :</label> {{data.t.estimatedWorkload}} j</div> 
+        <div id="trois"><label>Avancement :</label> {{data.t.progress}}%</div>
+        <div id="trois"><label>Charge consommée :</label> {{data.t.usedWorkload}} j</div>
+        <div id="trois"><label>Charge restante  :</label> {{data.t.remainingWorkload}} j</div>
     </li>
 
     <li>
-        <div id="six"><label>Statut :</label> {{task.state}}</div> 
-        <div *ngIf="task.state==='non demarree'" id="six"><button class="btn btn-success"(click)="start()">Démarrer la tâche</button></div>        
+        <div id="six"><label>Statut :</label> {{data.t.state}}</div> 
+        <div *ngIf="data.t.state==='not started'" id="six"><button class="btn btn-success"(click)="start()">Démarrer la tâche</button></div>        
     </li>
 </ul>

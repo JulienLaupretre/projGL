@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
 import { AddInfoService } from '../services/add-info.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import firebase from 'firebase/app';
@@ -29,7 +28,6 @@ export class FormProjectComponent implements OnInit {
   public projetActuel:Project;
   public listTask:Task[] = [];
   constructor(public ProjectsService: AddInfoService, 
-              private router: Router, 
               public dialogRef:MatDialogRef<FormProjectComponent>,
               public clService:ClientsService) { }
   
@@ -84,7 +82,13 @@ export class FormProjectComponent implements OnInit {
   projet:Project;
   AddProject(){
     //this.collab =new User("haithem", "dahimi", "dahimihaithem@gmail.com", "employee", ["employee"], new Date(), new Date(),"", "", "", "","",new Date() );
-    this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "started", this.StartDate, this.EndDate, new Date(), this.ClientName, null, this.listTask)
+    if(this.StartDate === undefined && this.EndDate === undefined)
+    {
+      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "non demarree", null, null, new Date(), this.ClientName, null, this.listTask)
+    }
+    else{
+      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "non demarree", this.StartDate, this.EndDate, new Date(), this.ClientName, null, this.listTask)
+    }
     this.ProjectsService.AddProjectToServer(this.projet);
   }
 
@@ -94,9 +98,24 @@ export class FormProjectComponent implements OnInit {
   }
 
   AddTask(){
+    if(this.end_dateTask === undefined && this.start_dateTask === undefined){
+      this.end_dateTask = null;
+      this.start_dateTask =null;
+    }
+    if(this.collaboRes ===undefined){
+      this.collaboRes = null;
+    }
+    if(this.description ===undefined){
+      this.description = null;
+    }
+    if(this.Cestimee == undefined){
+      this.Cestimee = null;
+    }
+    if(this.dependencylist == undefined){
+      this.dependencylist = null;
+    }
     if(this.tacheMere === undefined || this.tacheMere === null){
       this.task=new Task(1,this.taskName,"non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0, this.dependencylist,[],[], 0);
-
       this.listTask.push(this.task);
     } else {
       for( var index = 0; index < this.listTask.length; ++index){
@@ -128,6 +147,7 @@ export class FormProjectComponent implements OnInit {
             for(var index2 = 0; index2 < this.listTask[index].listTaskChild.length; ++index2)
               {
                 this.task=new Task(1,this.taskName, "non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
+                
                 if(this.listTask[index].listTaskChild[index2].name == this.tacheMere){
                   this.listTask[index].listTaskChild[index2].listTaskChild.push(this.task);
                   this.listTask[index].listTaskChild[index2].collab = null;
@@ -154,19 +174,6 @@ export class FormProjectComponent implements OnInit {
         }
     }
 
-    /*if(!this.projetActuel.hasOwnProperty('listTask'))
-    {
-      var db = firebase.database()
-        var ref = db.ref();
-        var usersRef = ref.child("projects");
-        // alanisawesome is the key of the object
-        var hopperRef = usersRef.child(this.projetActuel.id.toString());
-        hopperRef.update({
-          "listTask": [this.task]
-        });
-    } else {
-      this.projetActuel.listTask.push(this.task);
-    }*/
     this.taskName = null;
     this.start_dateTask = null;
     this.end_dateTask = null;
