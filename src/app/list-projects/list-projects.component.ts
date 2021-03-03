@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Project } from '../models/project';
 import {AddInfoService} from '../services/add-info.service'
 import { Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { User } from '../models/user';
 import 'firebase/database';
 import { Client } from '../models/client';
 import { Subscription } from 'rxjs';
+import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ListTasksComponent } from '../list-tasks/list-tasks.component';
 
 
 @Component({
@@ -15,12 +17,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './list-projects.component.html',
   styleUrls: ['./list-projects.component.scss']
 })
+
 export class ListProjectsComponent implements OnInit {
   
   closeResult = '';
   public projetActuel:Project;
   
   @Input() public listProjects:Project[];
+  @Input() public tabManager:boolean;
 
   public projectName:string = "";
   public ChefName:string = "";
@@ -39,7 +43,14 @@ export class ListProjectsComponent implements OnInit {
   public description:string;
   public task:Task;
 
-  constructor(public service:AddInfoService, private router: Router) { }
+  public error = false;
+  public errorMessage = "";
+
+  constructor(
+    public service:AddInfoService,
+    private router: Router,
+    private dialog: MatDialog,
+    ) { }
 
   public listClients: Client[];
   clientSubscription: Subscription;
@@ -48,6 +59,9 @@ export class ListProjectsComponent implements OnInit {
   userSubscription: Subscription;
 
   ngOnInit(): void {
+
+    //this.service.getListProjectsFromServer();
+
     this.clientSubscription = this.service.clientSubject.subscribe(
       (listCl: Client[]) => {
         this.listClients = listCl;
@@ -79,6 +93,69 @@ export class ListProjectsComponent implements OnInit {
     else return date2;
   }
 
+  open(projet){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = "60%";
+    dialogConfig.data = projet;
+    this.dialog.open(ListTasksComponent, dialogConfig);
+  }
+
+  hasCollab(listTask : Task[]){
+    // Return false if a task have neither child and collab
+
+    //console.log(listTask);
+
+    for (let t of listTask)
+      {
+        if(t.hasOwnProperty('listTaskChild'))
+        {
+          return this.hasCollab(t.listTaskChild);
+        }
+        else
+        {
+          return (t.collab != null);
+        }
+      }
+  }
+
+  isValid(proj : Project) : boolean{
+    let result = true;
+
+    if( !proj.hasOwnProperty("client") || 
+      !proj.hasOwnProperty("estimatedEndDate") || !proj.hasOwnProperty("listTask") ||
+      proj.state == "started" || proj.state == "abandoned" || proj.state == "finished"
+      || !proj.hasOwnProperty("projectManager")
+      )
+    {
+      result = false;
+    }else{
+      result = this.hasCollab(proj.listTask);
+    }
+    return result;
+  }
+
+  start(proj : Project){
+
+    //Verification avant de valider le demarage du projet
+    if(this.isValid(proj)){
+      //this.service.startProject(proj);
+      proj.state = "started";
+      //proj.startDate = new Date();
+      this.error = false;
+    }else{
+      this.errorMessage = "Le projet ne peut pas démarrer dans cet etat."
+      this.error = true;
+    }
+
+    this.service.saveProjects();
+    this.service.emitProjectsubject()
+
+  }
+
+  end(proj : Project){
+    //this.service.startProject(proj);
+  }
+
   openAndGetProject(projet,content){
     /*this.projetActuel = projet;
     this.projectName = this.projetActuel.name.toLowerCase();
@@ -108,6 +185,7 @@ export class ListProjectsComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });*/
   }
+
 /*
   getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -134,7 +212,8 @@ export class ListProjectsComponent implements OnInit {
   }
 
   AddTask(){
-    this.task=new Task(1,this.taskName, this.collaboRes,"non_demarree", this.startDate, this.startDate, this.endDate, this.endDate, this.description, this.Cestimee,2,2,2,[],[],[]);
+    this.task=new Task(1,this.taskName, "non demarree", this.collaboRes, this.startDate, this.startDate, this.endDate, this.endDate, this.description, this.Cestimee,2,2,2,[],[],[]);
+
     if(!this.projetActuel.hasOwnProperty('listTask'))
     {
       var db = firebase.database()
@@ -150,5 +229,15 @@ export class ListProjectsComponent implements OnInit {
     }
   }
 
+  hasClient(project:Project){
+    return project.hasOwnProperty('client');
+  }
+
+  hasStartDate(project:Project){
+    return project.hasOwnProperty('startDate');
+  }
+  hasEndDate(project:Project){
+    return project.hasOwnProperty('estimatedEndDate');
+  }
 
 }
