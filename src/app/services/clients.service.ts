@@ -14,6 +14,7 @@ export class ClientsService {
     clientsSubject = new Subject<Client[]>();
     edit:boolean=false;
     value: number=-1;
+    valueManager=true;
 
     constructor(){
         this.getClients();
@@ -28,6 +29,8 @@ export class ClientsService {
     }
 
     getClients() {
+      if(this.valueManager){
+
         firebase.database().ref('/clients')
           .on('value', (data: DataSnapshot) => {
               this.list_de_clients = data.val() ? data.val() : [];
@@ -35,6 +38,8 @@ export class ClientsService {
 
             }
           );
+
+        }else{this.emitClients();}
       }
     
       getSingleClient(id: number) {
@@ -57,6 +62,8 @@ export class ClientsService {
       }
 
       createNewClient(newClient: Client) {
+        if(this.valueManager){
+
         if(this.edit){
           this.list_de_clients[this.value]=newClient;
         }else{
@@ -64,6 +71,8 @@ export class ClientsService {
         }
         this.saveClients();
         this.emitClients();
+      
+      }
       }
     
       removeClient(client: Client) {

@@ -41,6 +41,7 @@ import { SearchUserComponent } from './search-user/search-user.component';
 import { InfoUserComponent } from './info-user/info-user.component';
 import { ProgressBarColor } from './directive/progress-bar-color';
 import { FormModifierProjetComponent } from './form-modifier-projet/form-modifier-projet.component';
+//import { AdminGuardService } from './services/admin-guard.service';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { FormModifierProjetComponent } from './form-modifier-projet/form-modifie
   providers: [
     AuthService,
     AuthGuardService,
+    //AdminGuardService,
     ClientsService,
     AddInfoService,
     DashboardService

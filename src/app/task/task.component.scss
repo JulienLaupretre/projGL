@@ -1,3 +1,9 @@
+ul {
+    list-style:none;
+    margin-left:0;
+    padding-left:0;
+    }
+    
 div {
     display:inline-block;
 
@@ -7,7 +13,7 @@ div#un{
 }
 
 div#deux{
-    width: 200px;
+    width: 300px;
 }
 
 div#trois{
@@ -15,12 +21,12 @@ div#trois{
 }
 
 div#quatre{
-    margin-right:115px ;
+    margin-right:137px ;
 }
 
 
 div#six{
-    margin-right:235px ;
+    width:300px ;
 }
 
 th{
