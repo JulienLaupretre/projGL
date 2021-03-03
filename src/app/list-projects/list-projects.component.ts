@@ -43,6 +43,8 @@ export class ListProjectsComponent implements OnInit {
   public description:string;
   public task:Task;
 
+  public error = false;
+
   constructor(
     public service:AddInfoService,
     private router: Router,
@@ -56,6 +58,9 @@ export class ListProjectsComponent implements OnInit {
   userSubscription: Subscription;
 
   ngOnInit(): void {
+
+    this.service.getListProjectsFromServer();
+
     this.clientSubscription = this.service.clientSubject.subscribe(
       (listCl: Client[]) => {
         this.listClients = listCl;
@@ -94,8 +99,17 @@ export class ListProjectsComponent implements OnInit {
     this.dialog.open(ListTasksComponent, dialogConfig);
   }
 
-  start(projet){
-    // this.service.
+  start(proj : Project){
+
+    //Verification avant de valider le demarage du projet
+    //if()
+
+    
+    //this.service.startProject(proj);
+  }
+
+  end(proj : Project){
+    //this.service.startProject(proj);
   }
 
   openAndGetProject(projet,content){
