@@ -31,7 +31,6 @@ export class AddInfoService {
   public listProject:Project[]= [];
   public listClients: Client[];
 
-
   saveProjects(){
     firebase.database().ref('/projects').set(this.listProject);
   }
@@ -63,9 +62,6 @@ export class AddInfoService {
   saveTasks(){
     firebase.database().ref('/listsOfTasks/'+this.idProject).set(this.listTasks);
   }
-  
-
-  
   
   getListClientsFromServer(){
     firebase.database().ref('/clients')

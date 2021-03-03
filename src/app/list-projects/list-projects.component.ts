@@ -47,7 +47,6 @@ export class ListProjectsComponent implements OnInit {
     public service:AddInfoService,
     private router: Router,
     private dialog: MatDialog,
-
     ) { }
 
   public listClients: Client[];
@@ -93,6 +92,10 @@ export class ListProjectsComponent implements OnInit {
     dialogConfig.width = "60%";
     dialogConfig.data = projet;
     this.dialog.open(ListTasksComponent, dialogConfig);
+  }
+
+  start(projet){
+    // this.service.
   }
 
   openAndGetProject(projet,content){
