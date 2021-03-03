@@ -112,4 +112,17 @@ export class AddInfoService {
     this.saveProjects();
   }
 
+  removeProject(project: Project) {
+    const projIndexToRemove = this.listProject.findIndex(
+      (proj) => {
+        if(proj === project) {
+          return true;
+        }
+      }
+    );
+    this.listProject.splice(projIndexToRemove, 1);
+    this.saveProjects();
+    this.emitProjectsubject();
+  }
+
 }
