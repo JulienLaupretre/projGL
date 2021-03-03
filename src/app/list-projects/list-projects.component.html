@@ -6,126 +6,29 @@
             <th >Client</th>
             <th >Date de début</th>
             <th >Date de fin</th>
+            <div *ngIf = "!tabManager">
+                <th></th>
+            </div>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor = "let projet of listProjects">
-            <td role="button" (click)= "openAndGetProject(projet,content)" >{{projet.name}}</td>
-            <td>{{projet.projectManager}}</td>
-            <td>{{projet.client}}</td>
-            <td>{{projet.startDate | date:'d/M/y' }}</td>
-            <td>{{projet.estimatedEndDate | date:'d/M/y' }}</td>
+            <td role="button" (click)= "open(projet)" >{{projet.name}}</td>
+            <td role="button" (click)= "open(projet)" >{{projet.projectManager}}</td>
+            <td role="button" (click)= "open(projet)" >{{projet.client}}</td>
+            <td role="button" (click)= "open(projet)" >{{projet.startDate | date:'d/M/y' }}</td>
+            <td role="button" (click)= "open(projet)" >{{projet.estimatedEndDate | date:'d/M/y' }}</td>
+            <div *ngIf = "tabManager">
+            <button>Supprimer</button>
+            
+            <button (click)= "start(projet)" >Demarrer</button>
+
+            <button>Terminer</button>
+        </div>
         </tr>
+        <div [hidden]="!error">
+            <p class="text-danger">{{ errorMessage }}</p>
+        </div>
+        
     </tbody>
 </table>
-
-<ng-template #content let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Projet: {{projetActuel.name}}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-<form>
-    <div class = "form-group">
-        <label for="Nom de projet">Le nom du projet</label>
-        <input id="Nom de projet" name ="Nom de projet" type="text" class="form-control" value="{{projetActuel.name}}" [(ngModel)]="projectName">
-    </div>
-    <div class = "form-group">
-        <label for="Chef de projet">Le chef de projet</label>
-        <input id="Chef de projet" name="Chef de projet" type="text" class="form-control" value="{{projetActuel.projectManager.firstName}} {{projetActuel.projectManager.lastName}}" [(ngModel)]="ChefName" disabled>
-    </div>
-    <div class="form-group">
-        <label for="client">Le client</label>
-        <select id="client" name="client" type="text" class="form-control" [(ngModel)]="ClientName">
-            <option *ngFor="let client of listClients">{{client.name}}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="start_date">Date de début</label>
-        <input id="start_date" name="start_date" type="date" class="form-control" value="{{projetActuel.startDate|date:'yyyy-MM-dd'}}" max="EndDate| date:'yyyy-MM-dd" [ngModel]="StartDate | date:'yyyy-MM-dd'" (ngModelChange)="StartDate = $event">
-    </div>
-    <div class="form-group">
-        <label for="end_date">Date de fin</label>
-        <input id="end_date" name="end_date" type="date" class="form-control" value="{{projetActuel.estimatedEndDate|date:'yyyy-MM-dd'}}" min="StartDate| date:'yyyy-MM-dd" [ngModel]="EndDate | date:'yyyy-MM-dd'" (ngModelChange)="EndDate = $event">
-    </div>
-    <div class="form-group">
-        <label for="description">Description du projet</label>
-        <textarea id="description" name="description" cols="30" rows="10" class="form-control"[(ngModel)]="Description">{{projetActuel.description}}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="tasksList">Liste des tâches</label>
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Nom Tâche</th>
-                    <th> Responsable</th>
-                    <th>C. estimée</th>
-                    <th>Début</th>
-                    <th>Fin</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor = "let task of projetActuel.listTask">
-                    <td>{{task.name}}</td>
-                    <td>{{task.collab}}</td>
-                    <td>{{task.estimatedWorkload}}</td>
-                    <td>{{task.startDate | date:'d/M/y'}}</td>
-                    <td>{{task.endDate | date:'d/M/y'}}</td>
-                    <td><button>Details</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button name = "buttonadd" type = "button" class = "btn btn-default" > AddTask </button>
-    </div>
-    <form>
-        <div class = "form-group">
-            <label for="taskName">Le nom de la tache: </label>
-            <input id="taskName" name ="taskName" type="text" class="form-control" required [(ngModel)] = "taskName">
-        </div>
-        <div class="form-group">
-            <label for="collaboRes">Le collaborateur responsable: </label>
-            <select id="collaboRes" name="collaboRes" type="text" class="form-control" [(ngModel)] = "collaboRes">
-                <option *ngFor= "let user of listUsers"> {{user.firstName}}</option>
-            </select>
-        </div>
-    
-        <div class="form-group">
-            <label for="start_date">Date de début: </label>
-            <input id="start_date" name="start_date" type="date" [min]="StartDate" [max]="minDate(EndDate,endDate)" class="form-control" [(ngModel)] = "startDate">
-        </div>
-        <div class="form-group">
-            <label for="end_date">Date de fin: </label>
-            <input id="end_date" name="end_date" type="date" [min]="maxDate(StartDate, startDate)" [max]="EndDate" class="form-control" [(ngModel)] = "endDate">
-        </div>
-        <div class="form-group">
-            <label for="C.estimee">La charge estimée: </label>
-            <input id="C.estimee" name ="C.estimee" type="number" min="0" class="form-control" [(ngModel)] = "Cestimee">
-        </div>
-        <div class="form-group">
-            <label for="parentTask">La tâche mére: </label>
-            <select id="parentTask" name="parentTask" type="text" class="form-control" [(ngModel)] = "tacheMere">
-                <option></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="dependencyList">Liste de dépendance: </label>
-            <select id="dependencyList" name="dependencyList" type="text" class="form-control" [(ngModel)] = "dependencylist" multiple>
-                <option></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="description">Description du projet</label>
-            <textarea id="description" name="description" cols="30" rows="10" class="form-control" [(ngModel)] = "description"></textarea>
-        </div>
-        <div><button (click)= "AddTask()">Ajouter la tâche</button><button>Annuler</button></div>
-      </form>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)= "saveChanges()" (click)="modal.close('Save click')" >Save</button>
-</div>
-</ng-template>
-

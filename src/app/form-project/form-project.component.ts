@@ -1,15 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
 import { AddInfoService } from '../services/add-info.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import { User } from '../models/user';
-
+import { Client } from '../models/client';
+import {ClientsService} from '../services/clients.service';
 
 @Component({
   selector: 'app-form-project',
@@ -20,15 +19,23 @@ export class FormProjectComponent implements OnInit {
 
   @Input() currentProject:Project;
   TasksSubscription: Subscription;
+
+  public listClients: Client[];
+  clientSubscription: Subscription;
+
+
+
   public projetActuel:Project;
   public listTask:Task[] = [];
-  constructor(public ProjectsService: AddInfoService, private router: Router, public dialogRef:MatDialogRef<FormProjectComponent>) { }
+  constructor(public ProjectsService: AddInfoService, 
+              public dialogRef:MatDialogRef<FormProjectComponent>,
+              public clService:ClientsService) { }
   
-  public projectName:string = "";
-  public ClientName:string="";
+  public projectName:string = null;
+  public ClientName:string= null;
   public StartDate:Date;
   public EndDate:Date;
-  public Description:string = "";
+  public Description:string = null;
 
   closeResult = '';
   projectsSubscription: Subscription;
@@ -63,66 +70,132 @@ export class FormProjectComponent implements OnInit {
       }
     );
     this.ProjectsService.emitUserSubject();
-  }
 
-  onViewTask(id: number) {
-    this.router.navigate(['/listTask', id]);
+    this.clientSubscription = this.clService.clientsSubject.subscribe(
+      (listCl: Client[]) => {
+        this.listClients = listCl;
+      }
+    );
+    this.clService.emitClients();
   }
-  
 
   projet:Project;
   AddProject(){
     //this.collab =new User("haithem", "dahimi", "dahimihaithem@gmail.com", "employee", ["employee"], new Date(), new Date(),"", "", "", "","",new Date() );
-    this.projet = new Project(this.projectsChefProjet.length, this.projectName, "dahimihaithem@gmail.com", this.Description, "started", this.StartDate, this.EndDate, new Date(), null, null, this.listTask)
+    if(this.StartDate === undefined && this.EndDate === undefined)
+    {
+      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "non demarree", null, null, new Date(), this.ClientName, null, this.listTask)
+    }
+    else{
+      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "non demarree", this.StartDate, this.EndDate, new Date(), this.ClientName, null, this.listTask)
+    }
     this.ProjectsService.AddProjectToServer(this.projet);
+  }
 
+
+  hasTaskFille(task:Task){
+    return task.hasOwnProperty('listTaskChild');
   }
 
   AddTask(){
+    if(this.end_dateTask === undefined && this.start_dateTask === undefined){
+      this.end_dateTask = null;
+      this.start_dateTask =null;
+    }
+    if(this.collaboRes ===undefined){
+      this.collaboRes = null;
+    }
+    if(this.description ===undefined){
+      this.description = null;
+    }
+    if(this.Cestimee == undefined){
+      this.Cestimee = null;
+    }
+    if(this.dependencylist == undefined){
+      this.dependencylist = null;
+    }
     if(this.tacheMere === undefined || this.tacheMere === null){
-      this.task=new Task(1,this.taskName, this.collaboRes,"non_demarree", this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,2,2,2,[],[],[], 0);
+      this.task=new Task(1,this.taskName,"non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0, this.dependencylist,[],[], 0);
       this.listTask.push(this.task);
     } else {
       for( var index = 0; index < this.listTask.length; ++index){
         if(this.listTask[index].name == this.tacheMere){
-          this.task=new Task(1,this.taskName, this.collaboRes, "non_demarree",this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,2,2,2,[],[],[], this.listTask[index].niveau +1);
+          this.listTask[index].collab = null;
+          this.task=new Task(1,this.taskName,"non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,[],[],[], this.listTask[index].niveau +1);
+
           this.listTask[index].listTaskChild.push(this.task);
-          if(this.listTask[index].listTaskChild.length === 1){
-            this.listTask[index].startDate = this.task.startDate;
-            this.listTask[index].endDate = this.task.endDate;
-          } else {
-            if(this.listTask[index].startDate > this.task.startDate){
+          if(!this.listTask[index].startDate === undefined && !this.listTask[index].endDate === undefined)
+          {
+            if(this.listTask[index].listTaskChild.length === 1){
               this.listTask[index].startDate = this.task.startDate;
-            }
-            if(this.listTask[index].endDate < this.task.endDate){
               this.listTask[index].endDate = this.task.endDate;
+              this.listTask[index].estimatedWorkload = this.task.estimatedWorkload;
+            } else {
+              this.listTask[index].estimatedWorkload += this.task.estimatedWorkload;
+              if(this.listTask[index].startDate > this.task.startDate){
+                this.listTask[index].startDate = this.task.startDate;
+              }
+              if(this.listTask[index].endDate < this.task.endDate){
+                this.listTask[index].endDate = this.task.endDate;
+              }
             }
           }
+          
         }
-      }
+        
+        else if(this.listTask[index].hasOwnProperty('listTaskChild')){
+            for(var index2 = 0; index2 < this.listTask[index].listTaskChild.length; ++index2)
+              {
+                this.task=new Task(1,this.taskName, "non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
+                
+                if(this.listTask[index].listTaskChild[index2].name == this.tacheMere){
+                  this.listTask[index].listTaskChild[index2].listTaskChild.push(this.task);
+                  this.listTask[index].listTaskChild[index2].collab = null;
+                  if(!this.listTask[index].listTaskChild[index2].startDate === undefined && !this.listTask[index].listTaskChild[index2].endDate === undefined )
+                  {
+                    if(this.listTask[index].listTaskChild[index2].listTaskChild.length === 1){
+                      this.listTask[index].listTaskChild[index2].startDate = this.task.startDate;
+                      this.listTask[index].listTaskChild[index2].endDate = this.task.endDate;
+                      this.listTask[index].listTaskChild[index2].estimatedWorkload = this.task.estimatedWorkload;
+                    } else {
+                      this.listTask[index].listTaskChild[index2].estimatedWorkload += this.task.estimatedWorkload;
+                      if(this.listTask[index].listTaskChild[index2].startDate > this.task.startDate){
+                        this.listTask[index].listTaskChild[index2].startDate = this.task.startDate;
+                      }
+                      if(this.listTask[index].listTaskChild[index2].endDate < this.task.endDate){
+                        this.listTask[index].listTaskChild[index2].endDate = this.task.endDate;
+                      }
+                    }
+                  }
+                }
+              }
+            
+          }
+        }
     }
-    /*if(!this.projetActuel.hasOwnProperty('listTask'))
-    {
-      var db = firebase.database()
-        var ref = db.ref();
-        var usersRef = ref.child("projects");
-        // alanisawesome is the key of the object
-        var hopperRef = usersRef.child(this.projetActuel.id.toString());
-        hopperRef.update({
-          "listTask": [this.task]
-        });
-    } else {
-      this.projetActuel.listTask.push(this.task);
-    }*/
-    this.taskName = "";
+
+    this.taskName = null;
     this.start_dateTask = null;
     this.end_dateTask = null;
-    this.collaboRes = "";
-    this.Cestimee = 0;
-    this.tacheMere = null;
+    this.collaboRes = null;
+    this.Cestimee = null;
+    this.tacheMere = undefined;
     this.dependencylist = [];
-    this.description = "";
+    this.description = null;
     this.task = null;
   }
+
+  projectValid(){
+    return (this.projectName ===null || this.projectName === undefined || this.projectName === "");
+  }
+
+  taskValid(){
+    return (this.taskName ===null || this.taskName === undefined || this.taskName === "")
+  }
+  
+  taskFormOpened = false;
+  openTaskForm(){
+    this.taskFormOpened=true;
+  } 
 
 }

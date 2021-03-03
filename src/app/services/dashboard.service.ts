@@ -111,7 +111,7 @@ export class DashboardService{
    
   }
   
-  getProjectsByCollab(user:string)
+getProjectsByCollab(user:string)
   {
     var listTask:any;
     var projet:any;
@@ -122,13 +122,16 @@ export class DashboardService{
       projet = data.val();
       if(projet.state != "not started")
       {
+        if (projet.hasOwnProperty("listTask")){
+
+        listTask = projet.listTask;
         if(projet.hasOwnProperty("listTask"))
         {
           listTask = projet.listTask;
           this.parcoursSousTache(projet,listTask,user,'/projects/'+ projet.id + '/listTask');
         }
       }
-      
+    } 
       this.emitProjectsCollab(); 
     });
     

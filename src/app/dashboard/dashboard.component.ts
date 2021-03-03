@@ -69,12 +69,10 @@ export class DashboardComponent implements OnInit{
   private dashboardService : DashboardService;
   private usersService : UsersService;
   
-
   constructor( private modalService: NgbModal, private filter: FilterPipe) {  
     this.dashboardService = new DashboardService(this.current_user);
     this.usersService = new UsersService();
     this.current_user2 = this.usersService.getUserBy(this.current_user);
-    //console.log(this.current_user2);
   }
   
   ngOnInit(): void {
@@ -111,8 +109,18 @@ export class DashboardComponent implements OnInit{
     this.current_task_proj = taskproject;
     console.log("okkkkk");
     console.log(this.current_task_proj.task.actualEndDate);
-    console.log(new Date().toISOString().substring(0, 10));
-    console.log(new Date());
+    var d = new Date();
+    //date.setDate(1);
+    var date = this.current_task_proj.task.actualEndDate;
+    //date.setDate(d.getDate());
+    //date.setMonth(d.getMonth());
+    //date.setFullYear(d.getFullYear());
+    this.current_task_proj.task.actualEndDate = date;
+    //this.current_task_proj.task.actualEndDate.setMonth(date.getMonth());
+    //this.current_task_proj.task.actualEndDate.setFullYear(date.getFullYear());
+    //this.current_task_proj.task.actualEndDate = date;
+    console.log(this.current_task_proj.task.actualEndDate);
+    //console.log(new Date().toISOString().substring(0, 10));
     if(this.current_task_proj.task.state == "finished")
     {
       this.chargeRestante_form = this.current_task_proj.task.remainingWorkload;
