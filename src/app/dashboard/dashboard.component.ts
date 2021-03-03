@@ -26,9 +26,9 @@ import { UsersService } from '../services/users.service';
 export class DashboardComponent implements OnInit{
     
  
+  current_user2:any;;
+  current_user:string = firebase.auth().currentUser.email; //"Marie";//"jean.doucet@pops.fr";//"Teo";//"Ines";;
   
-  current_user:string = "Jean";//"Marie";//"jean.doucet@pops.fr";//"Teo";//"Ines";
-  current_user2:any;
   current_date:Date =  new Date("2021-03-09");
 
   projects : Project [] = [];
