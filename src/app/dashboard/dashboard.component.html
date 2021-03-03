@@ -198,7 +198,7 @@
             <tr  role = "button" (click) = "open2(content2, proj)" *ngFor = "let proj of projectsCP | filterBy: selectedFilter2; let iTask = index" >
                 <td class="text-center" > {{proj.task.name}}</td>
                 <td> 
-                 <div  class="text-center"> {{taskproject.task.progress}}% </div>
+                 <div  class="text-center"> {{proj.task.progress}}% </div>
                  <mat-progress-bar 
                     value="{{ proj.task.progress }}"
                     [appProgressBarColor]="(proj.task)"
