@@ -12,12 +12,12 @@ import DataSnapshot = firebase.database.DataSnapshot;
 export class DashboardService{
 
   projects: Project[] = [];
-  projectsCP:Project[] = [];
+  projectsCP:TaskProject[] = [];
   projectsCollab: TaskProject[] = [];
   tasks : Task[] = [];
   avancements:any;
   projectSubject = new Subject<Project[]>();
-  projectCPSubject = new Subject<Project[]>();
+  projectCPSubject = new Subject<TaskProject[]>();
   projectCollabSubject = new Subject<TaskProject[]>();
 
   emitProjects() {
@@ -46,32 +46,92 @@ export class DashboardService{
       );
   }
 
-  getProjectsByCollab(user:string)
+  parcoursSousTache(projet:Project, listTask : Task[], user:String, path:string)
+  {
+    for (let t of listTask)
+      {
+        
+        if(t.hasOwnProperty('listTaskChild'))
+        {
+          //path+='/listTaskChild';
+          console.log(t.name);
+          console.log(t.id);
+         // path+="/" + t.id + '/listTaskChild' ;
+          console.log(path);
+          this.parcoursSousTache(projet,t.listTaskChild, user, path + "/" + t.id + '/listTaskChild');
+        }
+        else
+        {
+          if(t.collab==user && t.state != "not started")
+          {
+            path+='/'+t.id;
+            console.log(t.name);
+            console.log(path);
+            this.projectsCollab.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate, path,  t.endDate, t.name, t));
+          }
+        }
+      }
+  }
+
+  parcoursSousTacheCP(projet:Project, listTask : Task[])
+  {
+
+    for (let t of listTask)
+      {
+       
+        if(t.hasOwnProperty('listTaskChild'))
+        {
+          this.parcoursSousTacheCP(projet,t.listTaskChild);
+        }
+        else
+        {
+            this.projectsCP.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate, "/projects",  t.endDate, t.name, t));
+        }
+      }
+  }
+
+  getProjectsByCP(user:string)
+  {
+   
+    firebase.database().ref('/projects').orderByChild("projectManager").equalTo(user).on('child_added', (data: DataSnapshot)=>
+    {
+      var projet = data.val() ? data.val() : [];
+      if(projet.state != "not started")
+      {
+        if(projet.hasOwnProperty("listTask"))
+        {
+          var listTask = projet.listTask;
+          this.parcoursSousTacheCP(projet, listTask);
+        }
+      }
+      
+      
+      this.emitProjectsCP();
+    });   
+   
+  }
+  
+getProjectsByCollab(user:string)
   {
     var listTask:any;
     var projet:any;
     var projPrec:any;
     firebase.database().ref('/projects')
     .on('child_added', (data: DataSnapshot)=>{
+      
       projet = data.val();
-     
-      if (projet.hasOwnProperty("listTask")){
+      if(projet.state != "not started")
+      {
+        if (projet.hasOwnProperty("listTask")){
 
-      listTask = projet.listTask;
-      if(projPrec != projet)
-      {
-      for (let t of listTask)
-      {
-        if(t.collab == user )
+        listTask = projet.listTask;
+        if(projet.hasOwnProperty("listTask"))
         {
-         this.projectsCollab.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate, t));
-         //let taskProj = {"nomProjet": projet.name, "description": projet.description, "CP": projet.projectManager, "task": t  };
-         //this.projectsCollab.push(t);
-         //console.log(this.projectsCollab);
+          listTask = projet.listTask;
+          this.parcoursSousTache(projet,listTask,user,'/projects/'+ projet.id + '/listTask');
         }
-      }  
-     }
-    }
+      }
+    } 
       this.emitProjectsCollab(); 
     });
     
@@ -79,7 +139,8 @@ export class DashboardService{
 
   /*getUserBy(mail:string)
   {
-    firebase.database().ref('/users').orderByChild("collab").equalTo(mail).on('value', (data: DataSnapshot)=>
+    firebase.database().ref('/users').orderByChild("email").equalTo(mail)
+    .on('value', (data: DataSnapshot)=>
     {
       this.current_user = data.val() ? data.val() : [];
       console.log(this.current_user);
@@ -87,19 +148,7 @@ export class DashboardService{
 
   }*/
 
-  getUserBy(mail:string) {
-    return new Promise(
-      (resolve, reject) => {
-        firebase.database().ref('/users').orderByChild("email").once('value').then(
-          (data: DataSnapshot) => {
-            resolve(data.val());
-          }, (error) => {
-            reject(error);
-          }
-        );
-      }
-    );
-  }
+
 
   
 /*getProjetTaskUser(mail:string)
@@ -120,16 +169,7 @@ firebase.database().ref('/projects').orderByChild("projectManager").equalTo(mail
       )
 }*/
 
- getProjectsByCP(user:string)
-  {
-   
-    firebase.database().ref('/projects').orderByChild("projectManager").equalTo(user).on('value', (data: DataSnapshot)=>
-    {
-      this.projectsCP = data.val() ? data.val() : [];
-      this.emitProjectsCP();
-    });   
-   
-  }
+
 
   constructor(user:string)
   {
