@@ -18,7 +18,7 @@ export class MainWindowComponent implements OnInit {
   
   public user : User;
 
-  public users : User[];
+  public users : User[] ;
 
   constructor(private authService: AuthService,
     private userService: UsersService,
@@ -27,6 +27,7 @@ export class MainWindowComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+
     firebase.auth().onAuthStateChanged(
       (user)=>{
         if(user){
