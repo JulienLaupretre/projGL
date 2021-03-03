@@ -2,6 +2,5 @@
 <app-list-projects [listProjects] = projectsCollabo [tabManager] = false></app-list-projects>
 <label> Mes projets chef de projet</label>
 <app-list-projects [listProjects] = projectsChefProjet [tabManager] = true></app-list-projects>
-<div *ngIf="this.user.manager" > 
+<!-- <div *ngIf="this.user.manager" > </div> --> 
 <button (click) = "open()">Créer un nouveau projet</button>
-</div>
