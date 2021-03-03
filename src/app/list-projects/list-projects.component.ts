@@ -47,7 +47,7 @@ export class ListProjectsComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
 
-     ) { }
+    ) { }
 
   public listClients: Client[];
   clientSubscription: Subscription;
