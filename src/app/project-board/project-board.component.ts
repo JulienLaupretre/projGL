@@ -6,11 +6,16 @@ import { Router } from '@angular/router';
 import { User } from '../models/user';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog'
 import {FormProjectComponent} from '../form-project/form-project.component'
+import { UsersService } from '../services/users.service';
+import firebase from "firebase/app";
+import "firebase/auth";
+
 @Component({
   selector: 'app-project-board',
   templateUrl: './project-board.component.html',
   styleUrls: ['./project-board.component.scss']
 })
+
 export class ProjectBoardComponent implements OnInit {
 
   public projectName:string = "";
@@ -22,20 +27,46 @@ export class ProjectBoardComponent implements OnInit {
 
   closeResult = '';
   projectsSubscription: Subscription;
-  public projectsChefProjet: Project[];
+  public projectsChefProjet: Project[] = [];
   public projectsCollabo: Project[];
-  constructor(public ProjectsService: AddInfoService ,private router: Router, private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.projectsSubscription = this.ProjectsService.projectSubject.subscribe(
-      (listpr: Project[]) => {
-        this.projectsChefProjet = listpr;
-        this.projectsCollabo= listpr;
+  users : User[];
+  user : User;
+
+  constructor(public ProjectsService: AddInfoService, 
+    private router: Router, 
+    private dialog: MatDialog,
+    private userService: UsersService,
+    ) { }
+
+    async ngOnInit(): Promise<void> {
+
+      let email = firebase.auth().currentUser.email; 
+
+      this.userService.getUsersFromServer();
+      this.users = await this.userService.getUsers();
+      this.user = this.users.find(el => el != null && el.email===email);
+  
+      this.projectsSubscription = this.ProjectsService.projectSubject.subscribe(
+        (listpr: Project[]) => {
+  
+          const haveChild = (t) => t.listTaskChild != null;
+  
+          const isCollab = (t) => t.collab === email;
+          const isCollab2 = (t) => t.listTaskChild != null && t.listTaskChild.some(isCollab);
+          const isCollab3 = (t) => t.listTaskChild != null && t.listTaskChild.some(isCollab2);
+  
+          this.projectsChefProjet = listpr.filter(proj => proj.projectManager === email);
+         
+            this.projectsCollabo= listpr.filter(proj => proj.hasOwnProperty("listTask")).filter(proj => 
+            proj.listTask.filter(task => task.collab != null).some(isCollab) || //Case tache fille lvl 0
+            proj.listTask.filter(task => task.hasOwnProperty('listTaskChild')).some(isCollab2) || //Case tache fille lvl 1
+            proj.listTask.filter(task => task.listTaskChild != null && task.listTaskChild.some(haveChild)) 
+              .some(isCollab3) ); //Case tache fille lvl 2 
+        }
+      );
+      this.ProjectsService.emitProjectsubject();
       }
-    );
-    this.ProjectsService.emitProjectsubject();
-  }
-
 
   open(){
     const dialogConfig = new MatDialogConfig();

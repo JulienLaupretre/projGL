@@ -29,9 +29,9 @@ import { DashboardService } from './services/dashboard.service';
 import { SortDirective } from './directive/sort.directive';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
-import {AddInfoService} from './services/add-info.service';
+import { AddInfoService } from './services/add-info.service';
 import { ClientsService } from './services/clients.service';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import "firebase/auth";
 import "firebase/firestore";
@@ -40,7 +40,8 @@ import { AdminWindowComponent } from './admin-window/admin-window.component';
 import { SearchUserComponent } from './search-user/search-user.component';
 import { InfoUserComponent } from './info-user/info-user.component';
 import { ProgressBarColor } from './directive/progress-bar-color';
- 
+import { FormModifierProjetComponent } from './form-modifier-projet/form-modifier-projet.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +65,8 @@ import { ProgressBarColor } from './directive/progress-bar-color';
     ModifUserComponent,
     AdminWindowComponent,
     SearchUserComponent,
-    InfoUserComponent
+    InfoUserComponent,
+    FormModifierProjetComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,9 @@ import { ProgressBarColor } from './directive/progress-bar-color';
   ],
   bootstrap: [AppComponent],
   entryComponents:[FormClientComponent,
-    FormProjectComponent]
+    FormProjectComponent,
+    ListTasksComponent,
+  ]
 
 
 })

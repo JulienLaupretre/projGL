@@ -118,17 +118,19 @@ export class DashboardService{
     var projPrec:any;
     firebase.database().ref('/projects')
     .on('child_added', (data: DataSnapshot)=>{
-      
       projet = data.val();
       if(projet.state != "not started")
       {
+        if (projet.hasOwnProperty("listTask")){
+
+        listTask = projet.listTask;
         if(projet.hasOwnProperty("listTask"))
         {
           listTask = projet.listTask;
           this.parcoursSousTache(projet,listTask,user,'/projects/'+ projet.id + '/listTask');
         }
       }
-      
+    }
       this.emitProjectsCollab(); 
     });
     
