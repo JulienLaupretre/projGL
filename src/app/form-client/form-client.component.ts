@@ -66,21 +66,36 @@ export class FormClientComponent implements OnInit {
         })
       ],Validators.required)
     });
-
-    this.clientForm.setControl('listContact',this.setContacts(this.data.listContact))
+    
+    let lcts=this.data.listContact? this.data.listContact : [];
+    this.clientForm.setControl('listContact',this.setContacts(lcts))
     }
   }
 
   setContacts(Ctab:Contact[]):FormArray{
     const formArray = new FormArray([]);
-    Ctab.forEach(c=>{
+
+    for(let i=0; i<Ctab.length; i++){
+
+      formArray.push( this.formBuilder.group({
+        firstName:Ctab[i].firstName ,
+        lastName: Ctab[i].lastName,
+        email:Ctab[i].email,
+        phoneNumber:Ctab[i].phoneNumber
+      }));
+
+    }
+
+    /*Ctab.forEach(c=>{
      formArray.push( this.formBuilder.group({
         firstName:c.firstName ,
         lastName: c.lastName,
         email:c.email,
         phoneNumber:c.phoneNumber
       }));
-    });
+    });*/
+
+
     return formArray;
   }
 

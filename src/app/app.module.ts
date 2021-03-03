@@ -41,6 +41,7 @@ import { AdminWindowComponent } from './admin-window/admin-window.component';
 import { SearchUserComponent } from './search-user/search-user.component';
 import { InfoUserComponent } from './info-user/info-user.component';
 import { FormModifierProjetComponent } from './form-modifier-projet/form-modifier-projet.component';
+//import { AdminGuardService } from './services/admin-guard.service';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { FormModifierProjetComponent } from './form-modifier-projet/form-modifie
   providers: [
     AuthService,
     AuthGuardService,
+    //AdminGuardService,
     ClientsService,
     AddInfoService,
     DashboardService

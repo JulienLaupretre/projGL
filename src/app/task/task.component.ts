@@ -28,6 +28,12 @@ export class TaskComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+    
+  }
+
+  toStringDate (date:Date){
+   var s = date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear();
+   return s;
   }
 
   // toStringDate (date:Date){
@@ -43,4 +49,5 @@ export class TaskComponent implements OnInit {
       //TODO
     }
   }
+
 }
