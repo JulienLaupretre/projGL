@@ -3,6 +3,8 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UsersService } from '../services/users.service';
+import { User } from '../models/user';
 
 //import "firebase/firestore";
 
@@ -13,12 +15,19 @@ import { AuthService } from '../services/auth.service';
 })
 export class MainWindowComponent implements OnInit {
   isAuth:boolean;
+  
+  public user : User;
 
-  constructor(private authService: AuthService) { 
+  public users : User[] ;
+
+  constructor(private authService: AuthService,
+    private userService: UsersService,
+    ) { 
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
     firebase.auth().onAuthStateChanged(
       (user)=>{
         if(user){
@@ -28,6 +37,13 @@ export class MainWindowComponent implements OnInit {
         }
       }
     );
+
+    let email = firebase.auth().currentUser.email; 
+
+    this.userService.getUsersFromServer();
+    this.users = await this.userService.getUsers();
+    this.user = this.users.find(el => el != null && el.email===email);
+
   }
 
   onSignOut() {

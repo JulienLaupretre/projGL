@@ -15,26 +15,22 @@ import { Client } from '../models/client';
 })
 export class AddInfoService {
 
-  idProject:number;
-  constructor(private httpClient:HttpClient) { 
-    this.getListProjectsFromServer();
-    this.getListTasksFromServer(this.idProject);
-    this.getListClientsFromServer();
-    this.getListUsersFromServer();
-  }
+  idProject : number;
+
+  public tasks : Task[] = [];
+  public tasks1 : Task[] = [];
+  public tasks2 : Task[] = [];
+  public listProject : Project[] = [];
+  public listClients : Client[];
+
   projectSubject = new Subject<Project[]>();
   clientSubject = new Subject<Client[]>();
 
-
-  public tasks:Task[] = [];
-  public tasks1:Task[] = [];
-  public tasks2:Task[] = [];
-  //collab =new User(1, "haithem", "dahimi", "dahimihaithem@gmail.com", "employee", ["employee"], new Date(), new Date(),"", "", "", "","",new Date() );
-  task = new Task(1, "him", "dahimihaithem@gmail.com", "non_demarree", new Date(), new Date(), new Date(), new Date(), "dqsjdskq", 10, 0,10,0 , this.tasks,this.tasks1, this.tasks2 );
-  project = new Project(1, "building", "dahimihaithem@gmail.com", "this is builiding project", "termine", new Date(), new Date(), new Date(), null, null, [this.task]);
-  public listProject:Project[]= [];
-  public listClients: Client[];
-
+  constructor(private httpClient:HttpClient) { 
+    this.getListProjectsFromServer();
+    this.getListClientsFromServer();
+    this.getListUsersFromServer();
+  }
 
   saveProjects(){
     firebase.database().ref('/projects').set(this.listProject);
@@ -60,33 +56,11 @@ export class AddInfoService {
     this.projectSubject.next(this.listProject);
   }
 
-
   listTasks:Task[];
   tasksSubject = new Subject<Task[]>();
 
   saveTasks(){
     firebase.database().ref('/listsOfTasks/'+this.idProject).set(this.listTasks);
-  }
-  emitTasksubject()
-  {
-    //this.tasksSubject.next(this.listTasks);
-  }
-
-  getListTasksFromServer(id:number){
-    this.idProject = id;
-    firebase.database().ref('/listsOfTasks/'+ id)
-          .on('value', (data: DataSnapshot) => {
-              this.listTasks = data.val() ? data.val() : [];
-              this.emitTasksubject();
-            }
-          );
-  }
-
-  AddTaskToProject(task: Task){
-    //projet.listTask.push(task);
-    this.listTasks.push(task)
-    this.saveProjects();
-    this.emitTasksubject();
   }
   
   getListClientsFromServer(){
@@ -119,6 +93,31 @@ export class AddInfoService {
   emitUserSubject()
   {
     this.usersSubject.next(this.users);
+  }
+
+  // startProject(proj : Project){
+  //   //console.log(this.listProject);
+
+  //   let index = this.listProject.findIndex(p => p === proj);
+  //   proj.state = "startedddd";
+  //   proj.startDate = new Date();
+  //   console.log(proj.startDate);
+  //   console.log(this.listProject[index]);
+  //   this.listProject[index] = proj;
+
+  //   console.log(this.listProject[index]);
+    
+
+  //   this.saveProjects();
+  //   this.emitProjectsubject()
+  // }
+
+  
+  endProject(proj : Project){
+    let index = this.listProject.findIndex(p => p === proj);
+    this.listProject[index] = proj;
+
+    this.saveProjects();
   }
 
 }

@@ -15,17 +15,20 @@ import { UsersService } from '../services/users.service';
 })
 export class SearchUserComponent implements OnInit {
 
+  active = false;
+
   users$?: Observable<User[]>;
 
   private searchTerms = new Subject<string>();
 
   constructor(private userService: UsersService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
     this.userService.getUsersFromServer(); //Fetch user to modify later the list
     
     this.users$ = this.searchTerms.pipe(
+      
       // wait 300ms after each keystroke before considering the term
       debounceTime(200),
 
@@ -38,11 +41,14 @@ export class SearchUserComponent implements OnInit {
         map(users => users.filter(user => user != null))
         )
       
-      
       .pipe(
         map(users => users.filter(user => user.email.includes(term)))
       )),
     );
+
+    await this.userService.getUsers();
+    this.search('@');
+    
   }
 
   // Push a search term into the observable stream.

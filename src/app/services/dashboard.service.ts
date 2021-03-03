@@ -111,7 +111,7 @@ export class DashboardService{
    
   }
   
-  getProjectsByCollab(user:string)
+getProjectsByCollab(user:string)
   {
     var listTask:any;
     var projet:any;

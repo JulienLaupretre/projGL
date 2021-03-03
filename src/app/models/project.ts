@@ -9,9 +9,9 @@ export class Project {
   constructor(
     public id: number,
     public name: string,
-    public projectManager : string,
+    public projectManager : string, // email of manager
     public description? : string,
-    public state? : string,
+    public state? : string, // "started" "not started" "abandoned" "finished"
     public startDate? : Date,
     public estimatedEndDate? : Date,
     public actualEndDate? : Date,
