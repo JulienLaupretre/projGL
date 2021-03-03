@@ -18,10 +18,17 @@
             <td role="button" (click)= "open(projet)" >{{projet.startDate | date:'d/M/y' }}</td>
             <td role="button" (click)= "open(projet)" >{{projet.estimatedEndDate | date:'d/M/y' }}</td>
             <div *ngIf = "tabManager">
+
             <button (click)=OnDelete(projet)>Supprimer</button>
+
             <button (click)= "start(projet)" >Demarrer</button>
+
             <button>Terminer</button>
         </div>
         </tr>
+        <div [hidden]="!error">
+            <p class="text-danger">{{ errorMessage }}</p>
+        </div>
+        
     </tbody>
 </table>
