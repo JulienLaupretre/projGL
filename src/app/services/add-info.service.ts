@@ -113,12 +113,12 @@ export class AddInfoService {
   // }
 
   
-  endProject(proj : Project){
-    let index = this.listProject.findIndex(p => p === proj);
-    this.listProject[index] = proj;
-
-    this.saveProjects();
-  }
+  // endProject(proj : Project){
+  //   proj.state = "finished";
+  //   let index = this.listProject.findIndex(p => p === proj);
+  //   this.listProject[index] = proj;
+  //   this.saveProjects();
+  // }
 
   removeProject(project: Project) {
     const projIndexToRemove = this.listProject.findIndex(
