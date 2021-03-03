@@ -46,4 +46,17 @@ export class TaskComponent implements OnInit {
       // save la modif dans la BD
     }
   }
+
+dayCounter(){  
+  var startDate = this.data.t.actualStartDate;
+  startDate = new Date(startDate);
+  var endDate, noOfDaysToAdd = 13, count = 0;
+  while(count < noOfDaysToAdd){
+      endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+      if(endDate.getDay() != 0 && endDate.getDay() != 6){
+        count++;
+      }
+  }
+  alert(endDate);
+  }
 }
