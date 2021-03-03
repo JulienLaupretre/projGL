@@ -44,6 +44,7 @@ export class ListProjectsComponent implements OnInit {
   public task:Task;
 
   public error = false;
+  public errorMessage = "";
 
   constructor(
     public service:AddInfoService,
@@ -59,7 +60,7 @@ export class ListProjectsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.service.getListProjectsFromServer();
+    //this.service.getListProjectsFromServer();
 
     this.clientSubscription = this.service.clientSubject.subscribe(
       (listCl: Client[]) => {
@@ -99,13 +100,56 @@ export class ListProjectsComponent implements OnInit {
     this.dialog.open(ListTasksComponent, dialogConfig);
   }
 
+  hasCollab(listTask : Task[]){
+    // Return false if a task have neither child and collab
+
+    //console.log(listTask);
+
+    for (let t of listTask)
+      {
+        if(t.hasOwnProperty('listTaskChild'))
+        {
+          return this.hasCollab(t.listTaskChild);
+        }
+        else
+        {
+          return (t.collab != null);
+        }
+      }
+  }
+
+  isValid(proj : Project) : boolean{
+    let result = true;
+
+    if( !proj.hasOwnProperty("client") || 
+      !proj.hasOwnProperty("estimatedEndDate") || !proj.hasOwnProperty("listTask") ||
+      proj.state == "started" || proj.state == "abandoned" || proj.state == "finished"
+      || !proj.hasOwnProperty("projectManager")
+      )
+    {
+      result = false;
+    }else{
+      result = this.hasCollab(proj.listTask);
+    }
+    return result;
+  }
+
   start(proj : Project){
 
     //Verification avant de valider le demarage du projet
-    //if()
+    if(this.isValid(proj)){
+      //this.service.startProject(proj);
+      proj.state = "started";
+      //proj.startDate = new Date();
+      this.error = false;
+    }else{
+      this.errorMessage = "Le projet ne peut pas démarrer dans cet etat."
+      this.error = true;
+    }
 
-    
-    //this.service.startProject(proj);
+    this.service.saveProjects();
+    this.service.emitProjectsubject()
+
   }
 
   end(proj : Project){

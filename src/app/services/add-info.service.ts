@@ -95,14 +95,22 @@ export class AddInfoService {
     this.usersSubject.next(this.users);
   }
 
-  startProject(proj : Project){
-    //console.log(this.listProject);
-    proj.state = "started";
-    let index = this.listProject.findIndex(p => p === proj);
-    this.listProject[index] = proj;
+  // startProject(proj : Project){
+  //   //console.log(this.listProject);
 
-    this.saveProjects();
-  }
+  //   let index = this.listProject.findIndex(p => p === proj);
+  //   proj.state = "startedddd";
+  //   proj.startDate = new Date();
+  //   console.log(proj.startDate);
+  //   console.log(this.listProject[index]);
+  //   this.listProject[index] = proj;
+
+  //   console.log(this.listProject[index]);
+    
+
+  //   this.saveProjects();
+  //   this.emitProjectsubject()
+  // }
 
   
   endProject(proj : Project){
