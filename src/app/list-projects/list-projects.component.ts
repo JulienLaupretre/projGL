@@ -279,4 +279,50 @@ export class ListProjectsComponent implements OnInit {
     return project.hasOwnProperty('estimatedEndDate');
   }
 
+
+ 
+
+
+  parcoursSousTacheCP(listTask:Task[]): Task[]
+  {
+    var tasks:Task[]=[]
+
+      for (let t of listTask)
+        {
+        
+          if(t.hasOwnProperty('listTaskChild'))
+          {
+            this.parcoursSousTacheCP(t.listTaskChild);
+          }
+          else
+          {
+              tasks.push(t);
+          }
+        }
+    
+    return tasks;
+  }
+
+
+  OnDelete(projet:Project){
+    if(confirm("Voulez-vous vraiment supprimer ce projet ?"))
+    if(projet.hasOwnProperty('listTask')){
+      let tab=this.parcoursSousTacheCP(projet.listTask);
+      for(let t of tab){
+        if(t.hasOwnProperty('progress') && t.progress!=0){
+          alert("Vous ne pouvez pas supprimer ce projet : un avancement est enregistré sur certaines de ses tâches. Vous pouvez seulment le terminer .")
+          break;
+        }else{
+          this.service.removeProject(projet);
+        }
+      }
+
+    }else{
+      this.service.removeProject(projet);
+    }
+
+  }
+
+
+
 }

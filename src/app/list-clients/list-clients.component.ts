@@ -43,8 +43,10 @@ export class ListClientsComponent implements OnInit, OnDestroy {
   }
 
   onDeleteClient(client: Client) {
-
+    if(confirm('Voulez-vous vraiment supprimer cet élément ?'))
+    {
     this.clientsService.removeClient(client);
+    }
   }
 
   onEditClient(client: Client, index: number) {
@@ -67,7 +69,10 @@ export class ListClientsComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    this.clientsSubscription.unsubscribe();
+    
+      this.clientsSubscription.unsubscribe();
+    
+    
   }
 
   isEmpty(s: string):string{

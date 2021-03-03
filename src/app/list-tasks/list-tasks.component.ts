@@ -26,6 +26,9 @@ export class ListTasksComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+    
+
     let email = firebase.auth().currentUser.email; 
 
     this.listTask1 = this.projet.listTask.filter(task => task.collab === email);
