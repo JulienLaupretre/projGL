@@ -111,13 +111,14 @@ export class DashboardService{
    
   }
   
-  getProjectsByCollab(user:string)
+getProjectsByCollab(user:string)
   {
     var listTask:any;
     var projet:any;
     var projPrec:any;
     firebase.database().ref('/projects')
     .on('child_added', (data: DataSnapshot)=>{
+      
       projet = data.val();
       if(projet.state != "not started")
       {
@@ -130,7 +131,7 @@ export class DashboardService{
           this.parcoursSousTache(projet,listTask,user,'/projects/'+ projet.id + '/listTask');
         }
       }
-    }
+    } 
       this.emitProjectsCollab(); 
     });
     
