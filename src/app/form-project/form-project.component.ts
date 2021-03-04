@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
 import { AddInfoService } from '../services/add-info.service';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import firebase from 'firebase/app';
@@ -79,19 +80,31 @@ export class FormProjectComponent implements OnInit {
     this.clService.emitClients();
   }
 
+
+
   projet:Project;
   AddProject(){
     //this.collab =new User("haithem", "dahimi", "dahimihaithem@gmail.com", "employee", ["employee"], new Date(), new Date(),"", "", "", "","",new Date() );
     if(this.StartDate === undefined && this.EndDate === undefined)
     {
-      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "non demarree", null, null, new Date(), this.ClientName, null, this.listTask)
+      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "not started", null, null, new Date(), this.ClientName, null, this.listTask)
     }
     else{
-      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "non demarree", this.StartDate, this.EndDate, new Date(), this.ClientName, null, this.listTask)
+      this.projet = new Project(this.projectsChefProjet.length, this.projectName, firebase.auth().currentUser.email, this.Description, "not started", this.StartDate, this.EndDate, new Date(), this.ClientName, null, this.listTask)
     }
     this.ProjectsService.AddProjectToServer(this.projet);
   }
 
+  splitted:string[];
+  getEmailFromName(name:String){
+    this.splitted = name.split(" ");
+    for(var index=0; index<this.listUsers.length; ++index){
+      if(this.splitted[0]== this.listUsers[index].firstName 
+        && this.splitted[1]== this.listUsers[index].lastName){
+          return this.listUsers[index].email;
+        }
+    }
+  }
 
   hasTaskFille(task:Task){
     return task.hasOwnProperty('listTaskChild');
@@ -114,14 +127,14 @@ export class FormProjectComponent implements OnInit {
     if(this.dependencylist == undefined){
       this.dependencylist = null;
     }
-    if(this.tacheMere === undefined || this.tacheMere === null){
-      this.task=new Task(1,this.taskName,"non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0, this.dependencylist,[],[], 0);
+    if(this.tacheMere === "none" || this.tacheMere === undefined || this.tacheMere === null){
+      this.task=new Task(this.listTask.length,this.taskName,"not started", this.getEmailFromName(this.collaboRes), this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0, this.dependencylist,[],[], 0);
       this.listTask.push(this.task);
     } else {
       for( var index = 0; index < this.listTask.length; ++index){
         if(this.listTask[index].name == this.tacheMere){
           this.listTask[index].collab = null;
-          this.task=new Task(1,this.taskName,"non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,[],[],[], this.listTask[index].niveau +1);
+          this.task=new Task(this.listTask[index].listTaskChild.length,this.taskName,"not started",  this.getEmailFromName(this.collaboRes), this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,[],[],[], this.listTask[index].niveau +1);
 
           this.listTask[index].listTaskChild.push(this.task);
           if(!this.listTask[index].startDate === undefined && !this.listTask[index].endDate === undefined)
@@ -144,9 +157,10 @@ export class FormProjectComponent implements OnInit {
         }
         
         else if(this.listTask[index].hasOwnProperty('listTaskChild')){
+          this.listTask[index].estimatedWorkload =null;
             for(var index2 = 0; index2 < this.listTask[index].listTaskChild.length; ++index2)
               {
-                this.task=new Task(1,this.taskName, "non demarree", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
+                this.task=new Task(this.listTask[index].listTaskChild[index2].listTaskChild.length,this.taskName, "not started",  this.getEmailFromName(this.collaboRes), this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
                 
                 if(this.listTask[index].listTaskChild[index2].name == this.tacheMere){
                   this.listTask[index].listTaskChild[index2].listTaskChild.push(this.task);
@@ -179,7 +193,7 @@ export class FormProjectComponent implements OnInit {
     this.end_dateTask = null;
     this.collaboRes = null;
     this.Cestimee = null;
-    this.tacheMere = undefined;
+    this.tacheMere = "none";
     this.dependencylist = [];
     this.description = null;
     this.task = null;
