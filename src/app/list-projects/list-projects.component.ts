@@ -10,7 +10,7 @@ import { Client } from '../models/client';
 import { Subscription } from 'rxjs';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ListTasksComponent } from '../list-tasks/list-tasks.component';
-
+import {FormModifierProjetComponent} from '../form-modifier-projet/form-modifier-projet.component';
 
 @Component({
   selector: 'app-list-projects',
@@ -24,8 +24,7 @@ export class ListProjectsComponent implements OnInit {
   public projetActuel:Project;
   
   @Input() public listProjects:Project[];
-  @Input() public tabManager:boolean;
-
+  @Input() public isCollabo: boolean;
   public projectName:string = "";
   public ChefName:string = "";
   public ClientName:string="";
@@ -55,7 +54,7 @@ export class ListProjectsComponent implements OnInit {
   public listClients: Client[];
   clientSubscription: Subscription;
 
-  public listUsers: User[];
+  public listUsers: User[] = [];
   userSubscription: Subscription;
 
   ngOnInit(): void {
@@ -77,27 +76,25 @@ export class ListProjectsComponent implements OnInit {
     this.service.emitUserSubject();
   }
 
-  maxDate(date1:Date, date2:Date){
-    if(date1>date2)
-    {
-      return date1;
+  getUserName(projet:Project){
+    if(this.listUsers != undefined){
+      for(var index=0; index<this.listUsers.length; ++index){
+        if(this.listUsers[index].email == projet.projectManager){
+          return this.listUsers[index].firstName + ' ' +this.listUsers[index].lastName;
+        }
+      }
     }
-    else return date2;
-  }
-
-  minDate(date1:Date, date2:Date){
-    if(date1<date2)
-    {
-      return date1;
-    }
-    else return date2;
   }
 
   open(projet){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = "60%";
     dialogConfig.data = projet;
-    this.dialog.open(ListTasksComponent, dialogConfig);
+    if(this.isCollabo){
+      this.dialog.open(ListTasksComponent, dialogConfig);
+    } else {
+      this.dialog.open(FormModifierProjetComponent, dialogConfig);
+    }
   }
 
   hasCollab(listTask : Task[]){
