@@ -62,7 +62,7 @@
     <div class="form-group">
       <label for="collaboRes">Le collaborateur responsable: </label>
       <select id="collaboRes" name="collaboRes" type="text" class="form-control" [(ngModel)] = "collaboRes">
-        <option *ngFor= "let user of listUsers"> {{user.firstName}} </option>
+        <option *ngFor= "let user of listUsers"> {{user.firstName}} {{user.lastName}}</option>
       </select>
     </div>
 
@@ -81,6 +81,7 @@
     <div class="form-group">
       <label for="parentTask">La tâche mére: </label>
       <select id="parentTask" name="parentTask" type="text" class="form-control" [(ngModel)] = "tacheMere">
+        <option selected="selected">none</option>
         <ng-container *ngFor="let task of listTask">
           <option style="font-weight: bold;" > {{task.name}}</option>
           <ng-container *ngIf="hasTaskFille(task)">
