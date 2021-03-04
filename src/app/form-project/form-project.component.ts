@@ -97,6 +97,7 @@ export class FormProjectComponent implements OnInit {
 
   splitted:string[];
   getEmailFromName(name:String){
+    if(name !=undefined || name != null){
     this.splitted = name.split(" ");
     for(var index=0; index<this.listUsers.length; ++index){
       if(this.splitted[0]== this.listUsers[index].firstName 
@@ -104,6 +105,7 @@ export class FormProjectComponent implements OnInit {
           return this.listUsers[index].email;
         }
     }
+  }
   }
 
   hasTaskFille(task:Task){

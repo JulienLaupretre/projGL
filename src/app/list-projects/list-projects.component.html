@@ -17,7 +17,7 @@
             <td role="button" (click)= "open(projet)" >{{projet.client}}</td>
             <td role="button" (click)= "open(projet)" >{{projet.startDate | date:'d/M/y' }}</td>
             <td role="button" (click)= "open(projet)" >{{projet.estimatedEndDate | date:'d/M/y' }}</td>
-             <div *ngIf = "tabManager">
+             <div *ngIf = "!isCollabo">
               
             <button (click)=OnDelete(projet)>Supprimer</button>
             <button (click)= "start(projet)" >Demarrer</button>
