@@ -11,8 +11,7 @@ import DataSnapshot = firebase.database.DataSnapshot;
   providedIn: 'root'
 })
 export class UsersService{
-  private httpClient: HttpClient;
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
   public user: User;
 

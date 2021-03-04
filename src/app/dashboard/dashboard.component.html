@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-md-6 mb-2">
                     <label for="chefDeProjet">Chef de projet</label>
-                    <input id="chefDeProjet"  name="chefDeProjet" class="form-control" disabled>
+                    <input id="chefDeProjet"  name="chefDeProjet" class="form-control"  value= {{current_task_proj.projectManager}} disabled>
                     
                     
                 </div>
@@ -265,11 +265,11 @@
     
                     <div class="col-md-6 mb-2">
                         <label for="dateDebut">Début</label>
-                        <input id="dateDebut" name="dateDebut" class="form-control" value="{{current_task_proj.estimatedEndDate}}"  disabled>
+                        <input id="dateDebut" name="dateDebut" class="form-control" value="{{current_task_proj.startDate}}"  disabled>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="dateFin">Fin</label>
-                        <input  id="dateFin" name="dateFin" class="form-control" value="{{current_task_proj.startDate}}" disabled>
+                        <input  id="dateFin" name="dateFin" class="form-control" value="{{current_task_proj.estimatedEndDate}}" disabled>
                     </div>
                 </div>
               </form>
