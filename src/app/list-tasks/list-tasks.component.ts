@@ -26,18 +26,22 @@ export class ListTasksComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+    
+
     let email = firebase.auth().currentUser.email; 
 
     this.listTask1 = this.projet.listTask.filter(task => task.collab === email);
 
-    let lt = this.projet.listTask.filter(t => t.listTaskChild != null);
+    let lt = this.projet.listTask.filter(t => t.hasOwnProperty('listTaskChild'));
     lt.forEach(t => {
-      this.listTask2 = t.listTaskChild.filter(t => t.collab === email);
+      this.listTask2 = this.listTask2.concat(t.listTaskChild.filter(t => t.collab === email));
       }
     );
 
     lt.forEach(t => {
-      let ta = t.listTaskChild.filter(t => t.listTaskChild != null)
+      let ta = t.listTaskChild.filter(t => t.hasOwnProperty('listTaskChild'))
+      
       ta.forEach(t => {
         this.listTask3 = this.listTask3.concat(t.listTaskChild.filter(t => t.collab === email))
       });
@@ -45,7 +49,6 @@ export class ListTasksComponent implements OnInit {
     );
 
     this.listTask = this.listTask1.concat(this.listTask2).concat(this.listTask3);
-
   }
 
   open(task : Task){

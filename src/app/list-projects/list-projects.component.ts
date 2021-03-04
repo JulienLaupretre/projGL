@@ -42,11 +42,13 @@ export class ListProjectsComponent implements OnInit {
   public description:string;
   public task:Task;
 
+  public error = false;
+  public errorMessage = "";
+
   constructor(
     public service:AddInfoService,
     private router: Router,
     private dialog: MatDialog,
-
     ) { }
 
   public listClients: Client[];
@@ -56,6 +58,9 @@ export class ListProjectsComponent implements OnInit {
   userSubscription: Subscription;
 
   ngOnInit(): void {
+
+    //this.service.getListProjectsFromServer();
+
     this.clientSubscription = this.service.clientSubject.subscribe(
       (listCl: Client[]) => {
         this.listClients = listCl;
@@ -90,6 +95,101 @@ export class ListProjectsComponent implements OnInit {
     } else {
       this.dialog.open(FormModifierProjetComponent, dialogConfig);
     }
+  }
+
+  hasCollab(listTask : Task[]){
+    // Return false if a task have neither child and collab
+
+    //console.log(listTask);
+
+    for (let t of listTask)
+      {
+        if(t.hasOwnProperty('listTaskChild'))
+        {
+          return this.hasCollab(t.listTaskChild);
+        }
+        else
+        {
+          return (t.collab != null && t.hasOwnProperty('startDate') 
+          && t.hasOwnProperty('actualStartDate') && t.hasOwnProperty('endDate') 
+          && t.hasOwnProperty('actualEndDate') && t.hasOwnProperty('estimatedWorkload') 
+          && t.hasOwnProperty('usedWorkload') && t.hasOwnProperty('remainingWorkload')
+          );
+        }
+      }
+  }
+
+
+
+  isValid(proj : Project) : boolean{
+    let result = true;
+
+    if( !proj.hasOwnProperty("client") || 
+      !proj.hasOwnProperty("estimatedEndDate") || !proj.hasOwnProperty("listTask") ||
+      proj.state == "started" || proj.state == "abandoned" || proj.state == "finished"
+      || !proj.hasOwnProperty("projectManager")
+      )
+    {
+      result = false;
+    }else{
+      result = this.hasCollab(proj.listTask);
+    }
+    return result;
+  }
+
+  start(proj : Project){
+
+    //Verification avant de valider le demarage du projet
+    if(this.isValid(proj)){
+      //this.service.startProject(proj);
+      proj.state = "started";
+      //proj.startDate = new Date();
+      // this.error = false;
+      alert("Projet demarré");
+    }else{
+      alert("Ce projet contient des champs incomplets/incorrects");
+      // this.errorMessage = "Le projet ne peut pas démarrer dans cet etat."
+      // this.error = true;
+    }
+
+    this.service.saveProjects();
+    this.service.emitProjectsubject()
+
+  }
+
+  end(proj : Project){
+
+    if(this.isFinished(proj.listTask)){
+      proj.state = "finished"
+      proj.actualEndDate = new Date;
+      alert("Ce projet est terminé");
+    }else{
+      if (confirm("Ce projet a des tâches non terminées, voulez-vous abandonné le projet ?")){
+        proj.state = "abandoned";
+        alert("Ce projet est abandonné");
+        //proj.actualEndDate = new Date;
+      }
+    }
+    this.service.saveProjects();
+    this.service.emitProjectsubject()
+  }
+
+  isFinished(listTask : Task[]){
+    // Return false if a task have neither child and collab
+
+    //console.log(listTask);
+
+    for (let t of listTask)
+      {
+        if(t.hasOwnProperty('listTaskChild'))
+        {
+          return this.isFinished(t.listTaskChild);
+        }
+        else
+        {
+          return (t.progress == 100);
+        }
+      }
   }
 
   openAndGetProject(projet,content){
@@ -175,5 +275,51 @@ export class ListProjectsComponent implements OnInit {
   hasEndDate(project:Project){
     return project.hasOwnProperty('estimatedEndDate');
   }
+
+
+ 
+
+
+  parcoursSousTacheCP(listTask:Task[]): Task[]
+  {
+    var tasks:Task[]=[]
+
+      for (let t of listTask)
+        {
+        
+          if(t.hasOwnProperty('listTaskChild'))
+          {
+            this.parcoursSousTacheCP(t.listTaskChild);
+          }
+          else
+          {
+              tasks.push(t);
+          }
+        }
+    
+    return tasks;
+  }
+
+
+  OnDelete(projet:Project){
+    if(confirm("Voulez-vous vraiment supprimer ce projet ?"))
+    if(projet.hasOwnProperty('listTask')){
+      let tab=this.parcoursSousTacheCP(projet.listTask);
+      for(let t of tab){
+        if(t.hasOwnProperty('progress') && t.progress!=0){
+          alert("Vous ne pouvez pas supprimer ce projet : un avancement est enregistré sur certaines de ses tâches. Vous pouvez seulment le terminer .")
+          break;
+        }else{
+          this.service.removeProject(projet);
+        }
+      }
+
+    }else{
+      this.service.removeProject(projet);
+    }
+
+  }
+
+
 
 }

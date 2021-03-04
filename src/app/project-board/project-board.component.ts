@@ -42,6 +42,10 @@ export class ProjectBoardComponent implements OnInit {
     async ngOnInit(): Promise<void> {
 
       let email = firebase.auth().currentUser.email; 
+
+      this.userService.getUsersFromServer();
+      this.users = await this.userService.getUsers();
+      this.user = this.users.find(el => el != null && el.email===email);
   
       this.projectsSubscription = this.ProjectsService.projectSubject.subscribe(
         (listpr: Project[]) => {
@@ -54,7 +58,7 @@ export class ProjectBoardComponent implements OnInit {
   
           this.projectsChefProjet = listpr.filter(proj => proj.projectManager === email);
          
-            this.projectsCollabo= listpr.filter(proj => proj.hasOwnProperty("listTask")).filter(proj => 
+          this.projectsCollabo= listpr.filter(proj => proj.state == "started" && proj.hasOwnProperty("listTask")).filter(proj => 
             proj.listTask.filter(task => task.collab != null).some(isCollab) || //Case tache fille lvl 0
             proj.listTask.filter(task => task.hasOwnProperty('listTaskChild')).some(isCollab2) || //Case tache fille lvl 1
             proj.listTask.filter(task => task.listTaskChild != null && task.listTaskChild.some(haveChild)) 

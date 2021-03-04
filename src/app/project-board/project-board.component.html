@@ -1,5 +1,7 @@
 <label> Mes projets collaborateurs</label>
 <app-list-projects [listProjects] = projectsCollabo [isCollabo]=true></app-list-projects>
 <label> Mes projets chef de projet</label>
-<app-list-projects [listProjects] = projectsChefProjet  [isCollabo]=false></app-list-projects>
-<button (click) = "open()">Créer un nouveau projet</button>
+<app-list-projects [listProjects] = projectsChefProjet [isCollabo]=false [tabManager] = true></app-list-projects>
+<div *ngIf="this.user.manager" > 
+  <button (click) = "open()">Créer un nouveau projet</button>
+ </div> 
