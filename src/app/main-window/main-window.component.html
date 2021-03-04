@@ -11,7 +11,6 @@
     </div>
 </nav>
 
-
 <mat-tab-group>
     <mat-tab label="Tableau de bord">
         <ng-template matTabContent>
@@ -26,12 +25,13 @@
     </mat-tab>
 
     <div *ngIf="this.user.manager" >
-    <mat-tab label="Clients">
+        <mat-tab label="Clients">
         <ng-template matTabContent>
             <app-list-clients></app-list-clients>
         </ng-template>
-    </mat-tab>
-   </div>
+    </mat-tab>   
+    </div>
+
 
 </mat-tab-group>
 

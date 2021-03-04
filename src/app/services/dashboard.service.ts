@@ -96,7 +96,7 @@ export class DashboardService{
     firebase.database().ref('/projects').orderByChild("projectManager").equalTo(user).on('child_added', (data: DataSnapshot)=>
     {
       var projet = data.val() ? data.val() : [];
-      if(projet.state != "not started")
+      if(projet.state == "started")
       {
         if(projet.hasOwnProperty("listTask"))
         {
@@ -120,7 +120,7 @@ getProjectsByCollab(user:string)
     .on('child_added', (data: DataSnapshot)=>{
       
       projet = data.val();
-      if(projet.state != "not started")
+      if(projet.state == "started")
       {
         if (projet.hasOwnProperty("listTask")){
 

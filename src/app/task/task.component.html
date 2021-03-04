@@ -55,6 +55,6 @@
 
     <li>
         <div id="six"><label>Statut :</label> {{data.t.state}}</div> 
-        <div *ngIf="data.t.state==='not started'" id="six"><button class="btn btn-success"(click)="start()">Démarrer la tâche</button></div>       
+        <div *ngIf="data.t.state==='not started'" id="six"><button class="btn btn-success"(click)="start(data.t)">Démarrer la tâche</button></div>       
     </li>
 </ul>

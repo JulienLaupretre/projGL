@@ -20,7 +20,7 @@
              <div *ngIf = "!isCollabo">
               
             <button (click)=OnDelete(projet)>Supprimer</button>
-            <button (click)= "start(projet)" >Demarrer</button>
+            <button (click)= "start(projet)" [disabled]="projet.statut=='started'">Demarrer</button>
             <button (click)= "end(projet)" >Terminer</button>
               
         </div>
