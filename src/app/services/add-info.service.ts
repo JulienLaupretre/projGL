@@ -36,6 +36,9 @@ export class AddInfoService {
     firebase.database().ref('/projects').set(this.listProject);
   }
 
+  modifyProject(){
+    this.httpClient.post
+  }
   getListProjectsFromServer(){
     firebase.database().ref('/projects')
           .on('value', (data: DataSnapshot) => {

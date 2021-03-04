@@ -6,23 +6,15 @@
             <th >Client</th>
             <th >Date de début</th>
             <th >Date de fin</th>
-            <div *ngIf = "!tabManager">
-                <th></th>
-            </div>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor = "let projet of listProjects">
             <td role="button" (click)= "open(projet)" >{{projet.name}}</td>
-            <td role="button" (click)= "open(projet)" >{{projet.projectManager}}</td>
+            <td role="button" (click)= "open(projet)" >{{getUserName(projet)}}</td>
             <td role="button" (click)= "open(projet)" >{{projet.client}}</td>
             <td role="button" (click)= "open(projet)" >{{projet.startDate | date:'d/M/y' }}</td>
             <td role="button" (click)= "open(projet)" >{{projet.estimatedEndDate | date:'d/M/y' }}</td>
-            <div *ngIf = "tabManager">
-            <button>Supprimer</button>
-            <button>Demarrer</button>
-            <button>Terminer</button>
-        </div>
         </tr>
     </tbody>
 </table>

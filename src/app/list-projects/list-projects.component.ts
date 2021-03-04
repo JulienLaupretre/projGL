@@ -52,7 +52,7 @@ export class ListProjectsComponent implements OnInit {
   public listClients: Client[];
   clientSubscription: Subscription;
 
-  public listUsers: User[];
+  public listUsers: User[] = [];
   userSubscription: Subscription;
 
   ngOnInit(): void {
@@ -71,6 +71,15 @@ export class ListProjectsComponent implements OnInit {
     this.service.emitUserSubject();
   }
 
+  getUserName(projet:Project){
+    if(this.listUsers != undefined){
+      for(var index=0; index<this.listUsers.length; ++index){
+        if(this.listUsers[index].email == projet.projectManager){
+          return this.listUsers[index].firstName + ' ' +this.listUsers[index].lastName;
+        }
+      }
+    }
+  }
 
   open(projet){
     const dialogConfig = new MatDialogConfig();
