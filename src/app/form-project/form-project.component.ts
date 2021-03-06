@@ -130,13 +130,13 @@ export class FormProjectComponent implements OnInit {
       this.dependencylist = null;
     }
     if(this.tacheMere === "none" || this.tacheMere === undefined || this.tacheMere === null){
-      this.task=new Task(this.listTask.length,this.taskName,"not started", this.getEmailFromName(this.collaboRes), this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0, this.dependencylist,[],[], 0);
+      this.task=new Task(this.listTask.length,this.taskName,"not started", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0, this.dependencylist,[],[], 0);
       this.listTask.push(this.task);
     } else {
       for( var index = 0; index < this.listTask.length; ++index){
         if(this.listTask[index].name == this.tacheMere){
           this.listTask[index].collab = null;
-          this.task=new Task(this.listTask[index].listTaskChild.length,this.taskName,"not started",  this.getEmailFromName(this.collaboRes), this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,[],[],[], this.listTask[index].niveau +1);
+          this.task=new Task(this.listTask[index].listTaskChild.length,this.taskName,"not started",  this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,[],[],[], this.listTask[index].niveau +1);
 
           this.listTask[index].listTaskChild.push(this.task);
           if(!this.listTask[index].startDate === undefined && !this.listTask[index].endDate === undefined)
@@ -162,7 +162,7 @@ export class FormProjectComponent implements OnInit {
           this.listTask[index].estimatedWorkload =null;
             for(var index2 = 0; index2 < this.listTask[index].listTaskChild.length; ++index2)
               {
-                this.task=new Task(this.listTask[index].listTaskChild[index2].listTaskChild.length,this.taskName, "not started",  this.getEmailFromName(this.collaboRes), this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
+                this.task=new Task(this.listTask[index].listTaskChild[index2].listTaskChild.length,this.taskName, "not started",  this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
                 
                 if(this.listTask[index].listTaskChild[index2].name == this.tacheMere){
                   this.listTask[index].listTaskChild[index2].listTaskChild.push(this.task);
