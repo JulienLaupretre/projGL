@@ -25,7 +25,7 @@
         </ng-template>
     </mat-tab>
 
-    <div *ngIf="this.user.manager" >
+    <div *ngIf="this.user.manager || this.user.admin" >
     
     <mat-tab label="Clients">
         <ng-template matTabContent>
