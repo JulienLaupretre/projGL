@@ -24,39 +24,42 @@ this.updateColor();
 }
 
 updateColor(): void{
-  //var d = this.current_date.toISOString().substring(0, 10);
-  //current_date : Date = new Date();
   var startDate = new Date();
   var endDateTask = new Date(this.appProgressBarColor.endDate);
-  var noOfDaysToAdd = this.appProgressBarColor.remainingWorkload, count = 0;
+  var noOfDaysToAdd = this.appProgressBarColor.remainingWorkload, count = 0, endDate;
+
+
   if(noOfDaysToAdd>0)
   {
   while(count < noOfDaysToAdd){
-      var endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+      endDate = new Date(startDate.setDate(startDate.getDate() + 1));
       if(endDate.getDay() != 0 && endDate.getDay() != 6){
         count++;
       }
-  }
+    }
+
+  
+  console.log("debut");
   console.log(endDateTask);
   console.log(endDate);
   console.log((endDateTask.getTime() - endDate.getTime())/(1000*3600*24));
-  console.log();
-  if (endDate < endDateTask){
+  
+  if (endDate <= endDateTask){
     this.appProgressBarColor = 'green';
   }
-  else if(endDate > endDateTask && (endDateTask.getTime() - endDate.getTime())/(1000*3600*24) > 1)
+  else if((endDate.getTime()-endDateTask.getTime())/(1000*3600*24) < 2 && (endDate.getTime()-endDateTask.getTime())/(1000*3600*24) > 0)
   {
     this.appProgressBarColor = 'orange';
   }
   else{
     this.appProgressBarColor = 'red';
   }
-}
-else
-{
-  this.appProgressBarColor = 'blue';
-}
 
+
+}else{
+  this.appProgressBarColor = 'blue';
+
+}
   
  // console.log(this.appProgressBarColor)
   
@@ -67,4 +70,8 @@ else
     }
   `;
  // console.log(this.appProgressBarColor)  
-  }}
+  }
+
+
+
+}

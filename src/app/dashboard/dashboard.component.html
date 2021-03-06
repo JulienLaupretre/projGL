@@ -68,7 +68,7 @@
                    </div>
                 <div class="col-md-12 mb-3">
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value= {{current_task_proj.description}}></textarea>
+                    <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value= {{current_task_proj.description}} disabled></textarea>
                 </div>
                 <div class="col-md-6 mb-2">
                     <label for="chefDeProjet">Chef de projet</label>
@@ -110,7 +110,7 @@
             <h4 class="text-center" id="modal-basic-title">  {{current_task_proj.task.name}}</h4>
             <div class="col-md-12 mb-3">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value= {{current_task_proj.task.description}}></textarea>
+                <textarea id="description" name="description" class="form-control" aria-label="With textarea" class="form-control" value= {{current_task_proj.task.description}} disabled></textarea>
             </div>
             <div class="col-md-12 mb-2">
                 <label for="collaborateur">Collaborateur</label>
@@ -172,7 +172,7 @@
 </ng-template>
 
 
-
+<div *ngIf="this.user.manager" > 
 <div class="col-md-10 mb-3"> 
     <h2>Tâches de mes projets</h2>
     <fieldset class="col-4" > 
@@ -218,6 +218,7 @@
      </table>
      </fieldset>
      </div>
+</div>
 
      
 
