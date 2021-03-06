@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit{
  
   current_user2:any;;
   current_user:string = firebase.auth().currentUser.email; //"Marie";//"jean.doucet@pops.fr";//"Teo";//"Ines";;
+  user:User;
+  users:User[];
   
   current_date:Date =  new Date("2021-03-09");
 
@@ -69,13 +71,13 @@ export class DashboardComponent implements OnInit{
   private dashboardService : DashboardService;
   private usersService : UsersService;
   
-  constructor( private modalService: NgbModal, private filter: FilterPipe) {  
+  constructor( private modalService: NgbModal, private filter: FilterPipe, private userService:UsersService ) {  
     this.dashboardService = new DashboardService(this.current_user);
     //this.usersService = new UsersService();
     //this.current_user2 = this.usersService.getUserBy(this.current_user);
   }
   
-  ngOnInit(): void {
+  async ngOnInit() {
     this.reset();
     /*this.projetsSubscription = this.dashboardService.projectSubject.subscribe(
       (projects: Project[]) => {
@@ -84,6 +86,12 @@ export class DashboardComponent implements OnInit{
       }
     );
     this.dashboardService.emitProjects();*/
+    let email = firebase.auth().currentUser.email; 
+
+    this.userService.getUsersFromServer();
+    this.users = await this.userService.getUsers();
+    this.user = this.users.find(el => el != null && el.email===email);
+
 
     this.projetsSubscription = this.dashboardService.projectCPSubject.subscribe(
       (projects: TaskProject[]) => {

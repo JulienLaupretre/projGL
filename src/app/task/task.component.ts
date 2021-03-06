@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
 import { AddInfoService } from '../services/add-info.service';
+import firebase from "firebase/app";
 
 @Component({
   selector: 'app-task',
@@ -41,9 +42,10 @@ export class TaskComponent implements OnInit {
   //  return s;
   // }
 
-  start(){
+  start(t:Task){
     if(confirm("Voulez-vous vraiment démarrer cette tâche ?")){
-      this.data.t.state="started";
+      t.state="started";
+      firebase.database().ref("/projects/"+ this.data.p.id + "/listTask/"+ t.id).set(t);
       //this.ProjectsService.
       // save la modif dans la BD
       //TODO
