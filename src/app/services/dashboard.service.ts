@@ -62,6 +62,7 @@ export class DashboardService{
         }
         else
         {
+          path="projects/"+projet.id+"/listTask";
           if(t.collab==user && t.state != "not started")
           {
             path+='/'+t.id;
