@@ -61,11 +61,11 @@ export class DashboardComponent implements OnInit{
 
   taskFilter: any = {nameTaskForFilter: '' };
   projectFilter: any = {name: ''};
-  selectedFilter: any = this.taskFilter;
+  selectedFilter: any = this.projectFilter;
 
   taskFilter2: any = {nameTaskForFilter: '' };
   projectFilter2: any = {name: ''};
-  selectedFilter2: any = this.taskFilter2;
+  selectedFilter2: any = this.projectFilter2;
 
 
   private dashboardService : DashboardService;

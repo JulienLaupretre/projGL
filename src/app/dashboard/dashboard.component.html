@@ -3,7 +3,7 @@
 <h2>Mes tâches</h2>
 <fieldset class="col-4" > 
 <div class="col-md-4 mb-3">
-    <input id="searchBar2" name="searchBar2" type="text" [(ngModel)]="selectedFilter.nameTaskForFilter" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez une tâche" autofocus>
+    <input id="searchBar2" name="searchBar2" type="text" [(ngModel)]="selectedFilter.name" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez un projet" autofocus>
 <!--    <select class="selectpicker" [(ngModel)]="selectedFilter" placeholder="select" >
         <option [ngValue]= "taskFilter" >Filter by Name</option>
         <option [ngValue]= "projectFilter" >Filter by Project</option>
@@ -16,8 +16,8 @@
             <th class="text-center" style="width: 50%">Avancement</th>
             <th class="text-center"  >Charge Consommée</th>
             <th class="text-center"  >Charge Restante</th>
-            <th class="text-center"  [appSort]="projetsCollab" data-order="desc" data-name="task.estimatedWorkload" >Charge Estimée</th>
-            <th class="text-center" [appSort]="projetsCollab" data-order="desc" data-name="endDateForSort" scope="col">Date de Fin</th>
+            <th class="text-center"  >Charge Estimée</th>
+            <th class="text-center" [appSort]="projetsCollab" data-order="asc" data-name="endDateForSort" scope="col">Date de Fin</th>
         </tr>
     </thead>
     <tbody  > <!-- Corps du tableau -->
@@ -177,7 +177,7 @@
     <h2>Tâches de mes projets</h2>
     <fieldset class="col-4" > 
     <div class="col-md-4 mb-3">
-        <input id="searchBar" name="searchBar" type="text" [(ngModel)]="selectedFilter2.nameTaskForFilter" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez une tâche" autofocus>
+        <input id="searchBar" name="searchBar" type="text" [(ngModel)]="selectedFilter2.name" class="form-control" id="taskFilter" aria-describedby="taskFilter" placeholder="Cherchez un projet" autofocus>
     <!--    <select class="selectpicker" [(ngModel)]="selectedFilter2" placeholder="select" >
             <option [ngValue]= "taskFilter2" >Filter by Name</option>
             <option [ngValue]="projectFilter2" >Filter by Project</option>
@@ -191,7 +191,7 @@
                 <th class="text-center">Charge Consommée</th>
                 <th class="text-center">Charge Restante</th>
                 <th class="text-center">Charge Estimée</th>
-                <th class="text-center" [appSort]="projectsCP" data-order="desc" data-name="endDateForSort" scope="col">Date de Fin</th>
+                <th class="text-center" [appSort]="projectsCP" data-order="asc" data-name="endDateForSort" scope="col">Date de Fin</th>
             </tr>
         </thead>
         <tbody   > <!-- *ngFor="let projet of projectsCP | filterBy:projectFilter; let iProject = index "  Corps du tableau -->
