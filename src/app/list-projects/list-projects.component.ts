@@ -79,7 +79,7 @@ export class ListProjectsComponent implements OnInit {
   getUserName(projet:Project){
     if(this.listUsers != undefined){
       for(var index=0; index<this.listUsers.length; ++index){
-        if(this.listUsers[index].email == projet.projectManager){
+        if(!this.listUsers[index] === undefined && this.listUsers[index].email == projet.projectManager){
           return this.listUsers[index].firstName + ' ' +this.listUsers[index].lastName;
         }
       }
@@ -300,7 +300,7 @@ export class ListProjectsComponent implements OnInit {
     return tasks;
   }
 
-
+/*
   OnDelete(projet:Project){
     if(confirm("Voulez-vous vraiment supprimer ce projet ?"))
     if(projet.hasOwnProperty('listTask')){
@@ -320,6 +320,6 @@ export class ListProjectsComponent implements OnInit {
 
   }
 
-
+*/
 
 }
