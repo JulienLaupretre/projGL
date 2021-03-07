@@ -137,7 +137,9 @@ export class FormProjectComponent implements OnInit {
       for( var index = 0; index < this.listTask.length; ++index){
         if(this.listTask[index].name == this.tacheMere){
           this.listTask[index].collab = null;
+
           this.task=new Task(this.listTask[index].listTaskChild.length,this.taskName,"not started",  this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
+
 
           this.listTask[index].listTaskChild.push(this.task);
           if(!this.listTask[index].startDate === undefined && !this.listTask[index].endDate === undefined)
