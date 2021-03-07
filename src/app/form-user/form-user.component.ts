@@ -97,7 +97,7 @@ export class FormUserComponent implements OnInit {
         this.submitted = false;
       }
     );
-    this.goBack();
+    //this.goBack();
   }
   goBack(): void {
     this.location.back();

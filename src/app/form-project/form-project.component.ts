@@ -46,7 +46,7 @@ export class FormProjectComponent implements OnInit {
   public taskName:string;
   public start_dateTask:Date;
   public end_dateTask:Date;
-  public collaboRes:string;
+  public collaboRes:string ="";
   public Cestimee:number;
   public tacheMere:string;
   public dependencylist:string[];
@@ -97,7 +97,7 @@ export class FormProjectComponent implements OnInit {
 
   splitted:string[];
   getEmailFromName(name:String){
-    if(name !=undefined || name != null){
+    if(name !=undefined || name != null || name!=''){
     this.splitted = name.split(" ");
     for(var index=0; index<this.listUsers.length; ++index){
       if(this.splitted[0]== this.listUsers[index].firstName 
@@ -129,6 +129,7 @@ export class FormProjectComponent implements OnInit {
     if(this.dependencylist == undefined){
       this.dependencylist = null;
     }
+
     if(this.tacheMere === "none" || this.tacheMere === undefined || this.tacheMere === null){
       this.task=new Task(this.listTask.length,this.taskName,"not started", this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0, this.dependencylist,[],[], 0);
       this.listTask.push(this.task);
@@ -136,19 +137,19 @@ export class FormProjectComponent implements OnInit {
       for( var index = 0; index < this.listTask.length; ++index){
         if(this.listTask[index].name == this.tacheMere){
           this.listTask[index].collab = null;
-          this.task=new Task(this.listTask[index].listTaskChild.length,this.taskName,"not started",  this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,[],[],[], this.listTask[index].niveau +1);
+
+          this.task=new Task(this.listTask[index].listTaskChild.length,this.taskName,"not started",  this.collaboRes, this.start_dateTask, this.start_dateTask, this.end_dateTask, this.end_dateTask, this.description, this.Cestimee,0,this.Cestimee,0,this.dependencylist,[],[], this.listTask[index].niveau +1);
+
 
           this.listTask[index].listTaskChild.push(this.task);
           if(!this.listTask[index].startDate === undefined && !this.listTask[index].endDate === undefined)
           {
             if(this.listTask[index].listTaskChild.length === 1){
-              this.listTask[index].startDate = this.task.startDate;
-              this.listTask[index].endDate = this.task.endDate;
-              this.listTask[index].estimatedWorkload = this.task.estimatedWorkload;
+              this.listTask[index].startDate = this.start_dateTask;
+              this.listTask[index].endDate = this.end_dateTask;
             } else {
-              this.listTask[index].estimatedWorkload += this.task.estimatedWorkload;
-              if(this.listTask[index].startDate > this.task.startDate){
-                this.listTask[index].startDate = this.task.startDate;
+              if(this.listTask[index].startDate > this.start_dateTask){
+                this.listTask[index].startDate =  this.start_dateTask;
               }
               if(this.listTask[index].endDate < this.task.endDate){
                 this.listTask[index].endDate = this.task.endDate;
@@ -181,6 +182,12 @@ export class FormProjectComponent implements OnInit {
                       if(this.listTask[index].listTaskChild[index2].endDate < this.task.endDate){
                         this.listTask[index].listTaskChild[index2].endDate = this.task.endDate;
                       }
+                    }
+                    if(this.listTask[index].startDate> this.task.startDate){
+                      this.listTask[index].startDate = this.task.startDate;
+                    }
+                    if(this.listTask[index].endDate < this.task.endDate){
+                      this.listTask[index].endDate = this.task.endDate;
                     }
                   }
                 }
