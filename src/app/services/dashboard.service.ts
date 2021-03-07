@@ -84,7 +84,11 @@ export class DashboardService{
         {
           this.parcoursSousTacheCP(projet,t.listTaskChild);
         }
+<<<<<<< HEAD
         else 
+=======
+        else
+>>>>>>> 1c3c81495515f47c93aab99533bb0d19e0a783fd
         {
             this.projectsCP.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate, "/projects",  t.endDate, t.name, t));
         }
