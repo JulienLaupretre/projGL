@@ -63,7 +63,7 @@ export class DashboardService{
         else
         {
           path="projects/"+projet.id+"/listTask";
-          if(!t.hasOwnProperty("collab") && t.collab==user && t.state != "not started")
+          if(t.collab==user && t.state != "not started")
           {
             path+='/'+t.id;
             console.log(t.name);
@@ -84,7 +84,7 @@ export class DashboardService{
         {
           this.parcoursSousTacheCP(projet,t.listTaskChild);
         }
-        else if(!t.hasOwnProperty("collab"))
+        else 
         {
             this.projectsCP.push(new TaskProject(projet.id, projet.name, projet.projectManager, projet.description, projet.state, projet.startDate, projet.estimatedEndDate, "/projects",  t.endDate, t.name, t));
         }
